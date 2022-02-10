@@ -1,0 +1,75 @@
+version: "3"
+services:
+  redis:
+    image: redis:6.2-rc3-alpine3.13
+    restart: always
+    environment:
+      TZ: ${TZ}
+    ports:
+      - 6379:6379
+    volumes:
+      - ${REDIS_DATA}:/data
+      - ${REDIS_LOG}:/logs
+    command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
+  mysql:
+    container_name: mysql # 指定容器的名称
+    image: mysql:5.6 # 指定镜像和版本
+    restart: always # 指定开机重启
+    command: --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - ./conf.d:/etc/mysql/conf.d
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql:/var/lib/mysql:rw # 挂载数据目录
+  wvp:
+    build:
+      context: ./wvp
+    restart: always
+    environment:
+      TZ: ${TZ}
+      # WVP_CONFIG: "--media.ip=127.0.0.1 --media.sdp-ip=192.168.135.2 --sip.ip=192.168.135.2 --media.stream-ip=192.168.135.2 --sip.password=12345678"
+      WVP_DOMAIN: ${WVP_DOMAIN}
+      WVP_ID: ${WVP_ID}
+      WVP_PASSWORD: ${WVP_PASSWORD}
+      WVP_IP: ${WVP_IP}
+      WVP_PORT: ${WVP_PORT}
+      WVP_DB_PATH: ${WVP_DB_PATH}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PWD: ${REDIS_PASSWORD}
+      MEDIA_PORT: ${MEDIA_PORT}
+      ASSIST_PORT: ${ASSIST_PORT}
+      RECORD_PATH: ${RECORD_PATH}
+    ports:
+      - 30000-30500:30000-30500/udp
+      - 30000-30500:30000-30500/tcp
+      - 5060:5060
+      - 5060:5060/udp
+      # 按需调整宿主机的端口
+      - ${MEDIA_PORT}:${MEDIA_PORT}
+      - ${WVP_PORT}:${WVP_PORT}
+      # - 554:554
+      # - 1935:1935
+    expose:
+      - ${MEDIA_PORT}
+      - ${WVP_PORT}
+    volumes:
+      - ${RECORD_PATH}:${RECORD_PATH}:rw # 录像保存目录
+      - ./conf/wvp_config/run.sh:/opt/wvp/run.sh
+      - ./conf/wvp_config/application.yml:/opt/wvp/config/application.yml
+      - ./conf/wvp_config/application.assist.yml:/opt/assist/config/application.yml
+      - ./conf/wvp_config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
+      - ${WVP_LOGS}:/opt/wvp/logs #保存wvp日志
+      - ${MEDIA_LOGS}:/opt/media/log #保存zlm日志
+    depends_on:
+      - mysql
+      - redis
