@@ -16,25 +16,27 @@ RUN cd /home && \
         cp maven/settings.xml /usr/share/maven/conf/
 
 RUN cd /home && \
-        git clone "${gitUrl}/wvp-GB28181-pro.git"
+        git clone "https://e.coding.net/glsd/codestroge/wvp-GB28181-pro.git"
+
 RUN cd /home/wvp-GB28181-pro/web_src && \
         npm install && \
         npm run build
+
 RUN cd /home/wvp-GB28181-pro && \
         mvn clean package -Dmaven.test.skip=true && \
-        cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/ && \
-        cp /home/wvp-GB28181-pro/src/main/resources/application-docker.yml /opt/wvp/config/application.yml
+        cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/ 
 
 RUN cd /home && \
         git clone "${gitUrl}/wvp-pro-assist.git"
+
 RUN cd /home/wvp-pro-assist && \
         git reset --hard 58f1a79136a55a7cd1593c95b56ddadcc2225b61 && \
         mvn clean package -Dmaven.test.skip=true && \
-        cp /home/wvp-pro-assist/target/*.jar /opt/assist/ && \
-        cp /home/wvp-pro-assist/src/main/resources/application-dev.yml /opt/assist/config/application.yml
+        cp /home/wvp-pro-assist/target/*.jar /opt/assist/ 
 
 RUN cd /home && \
         git clone --depth=1 "${zlmGitUrl}"
+
 RUN cd /home/ZLMediaKit && \
         git submodule update --init --recursive && \
         mkdir -p build release/linux/Release/ &&\

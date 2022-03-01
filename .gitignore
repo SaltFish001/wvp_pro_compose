@@ -1,2 +1,5 @@
 .env
 mysql/
+redis/
+media/
+wvp/log/

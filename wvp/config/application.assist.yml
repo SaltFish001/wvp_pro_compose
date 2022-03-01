@@ -29,7 +29,7 @@ server:
 # [根据业务需求配置]
 userSettings:
     # [必选 ] zlm配置的录像路径
-    record: ${RECORD_PATH}
+    record: /media/record
     # [可选 ] 录像保存时长（单位： 天）每天晚12点自动对过期文件执行清理
     recordDay: 7
     # [必选 ] ffmpeg路径

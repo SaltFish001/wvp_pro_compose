@@ -40,6 +40,8 @@ services:
       WVP_ID: ${WVP_ID}
       WVP_PASSWORD: ${WVP_PASSWORD}
       WVP_IP: ${WVP_IP}
+      SIP_IP: ${SIP_IP}
+      MEDIA_IP: ${MEDIA_IP}
       WVP_PORT: ${WVP_PORT}
       WVP_DB_PATH: ${WVP_DB_PATH}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -49,6 +51,7 @@ services:
       MEDIA_PORT: ${MEDIA_PORT}
       ASSIST_PORT: ${ASSIST_PORT}
       RECORD_PATH: ${RECORD_PATH}
+      STREAM_HOST: ${STREAM_HOST}
     ports:
       - 30000-30500:30000-30500/udp
       - 30000-30500:30000-30500/tcp
@@ -63,11 +66,11 @@ services:
       - ${MEDIA_PORT}
       - ${WVP_PORT}
     volumes:
-      - ${RECORD_PATH}:${RECORD_PATH}:rw # 录像保存目录
-      - ./conf/wvp_config/run.sh:/opt/wvp/run.sh
-      - ./conf/wvp_config/application.yml:/opt/wvp/config/application.yml
-      - ./conf/wvp_config/application.assist.yml:/opt/assist/config/application.yml
-      - ./conf/wvp_config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
+      - ${RECORD_PATH}:/media/record:rw # 录像保存目录
+      - ./wvp/config/run.sh:/opt/wvp/run.sh
+      - ./wvp/config/application.yml:/opt/wvp/config/application.yml
+      - ./wvp/config/application.assist.yml:/opt/assist/config/application.yml
+      - ./wvp/config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
       - ${WVP_LOGS}:/opt/wvp/logs #保存wvp日志
       - ${MEDIA_LOGS}:/opt/media/log #保存zlm日志
     depends_on:
