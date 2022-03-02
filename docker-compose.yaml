@@ -35,7 +35,6 @@ services:
     restart: always
     environment:
       TZ: ${TZ}
-      # WVP_CONFIG: "--media.ip=127.0.0.1 --media.sdp-ip=192.168.135.2 --sip.ip=192.168.135.2 --media.stream-ip=192.168.135.2 --sip.password=12345678"
       WVP_DOMAIN: ${WVP_DOMAIN}
       WVP_ID: ${WVP_ID}
       WVP_PASSWORD: ${WVP_PASSWORD}
@@ -44,6 +43,7 @@ services:
       MEDIA_IP: ${MEDIA_IP}
       WVP_PORT: ${WVP_PORT}
       WVP_DB_PATH: ${WVP_DB_PATH}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       REDIS_HOST: wvpRedis
       REDIS_PORT: 6379

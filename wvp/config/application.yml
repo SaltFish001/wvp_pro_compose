@@ -19,8 +19,8 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://${WVP_DB_PATH}/wvp?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true
-        username: root
+        url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true
+        username: ${MYSQL_USERNAME}
         password: ${MYSQL_PASSWORD}
         druid:
             initialSize: 10                       # 连接池初始化连接数
