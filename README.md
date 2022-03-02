@@ -7,7 +7,7 @@
 
   step 1: 复制一份``.env.example`` 到根目录， 并改名``.env``
 
-  step 2: 必须修改``WVP_IP`` 变量， 对应到宿主机IP
+  step 2: 必须修改``SIP_IP`` 以及 ``STREAM_HOST`` 变量
 
   step 3: 根据描述， 按需修改各项变量， 特别注意[config.ini](./wvp/config/config.ini) 文件的 [http].port需要手动修改，且要与``MEDIA_PORT``保持一致
 
