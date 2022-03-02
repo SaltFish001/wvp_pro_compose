@@ -1,4 +1,5 @@
 spring:
+    # [可选]上传文件大小限制
     servlet:
         multipart:
             max-file-size: 10MB
@@ -15,6 +16,12 @@ spring:
         password: ${REDIS_PWD:}
         # [可选] 超时时间
         timeout: 10000
+        # [可选] 一个pool最多可分配多少个jedis实例
+        poolMaxTotal: 1000
+        # [可选] 一个pool最多有多少个状态为idle(空闲)的jedis实例
+        poolMaxIdle: 500
+        # [可选] 最大的等待时间(秒)
+        poolMaxWait: 5
     # [可选] jdbc数据库配置, 项目使用sqlite作为数据库，一般不需要配置
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -47,12 +54,32 @@ rj-druid-manage:
     loginUsername: ${DRUID_USER}          # 访问druid监控页面账号
     loginPassword: ${DRUID_PASS}    # 访问druid监控页面密码
 
+
+#mybatis:
+#    configuration:
+#        # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+#        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#        # 返回类型为Map,显示null对应的字段
+#        call-setters-on-nulls: true
+## [可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
+
 # [可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
 server:
     port: ${WVP_PORT}
+    # [可选] HTTPS配置， 默认不开启
+    ssl:
+        # [可选] 是否开启HTTPS访问
+        enabled: false
+        # [可选] 证书文件路径，放置在resource/目录下即可，修改xxx为文件名
+        key-store: classpath:xxx.jks
+        # [可选] 证书密码
+        key-password: password
+        # [可选] 证书类型， 默认为jks，根据实际修改
+        key-store-type: JKS
 
 # 作为28181服务器的配置
 sip:
+    # [必须修改] 本机的IP, 必须是网卡上的IP，用于sip下协议栈监听ip，如果监听所有设置为0.0.0.0
     monitor-ip: 0.0.0.0
     # [必须修改] 本机的IP
     ip: ${SIP_IP}
@@ -67,6 +94,15 @@ sip:
     id: ${WVP_ID:44010200492000000001}
     # [可选] 默认设备认证密码，后续扩展使用设备单独密码, 移除密码将不进行校验
     password: ${WVP_PASSWORD:admin123}
+    # [可选] 心跳超时时间， 建议设置为心跳周期的三倍
+    keepalive-timeout: 255
+    # [可选] 国标级联注册失败，再次发起注册的时间间隔。 默认60秒
+    register-time-interval: 60
+    # [可选] 云台控制速度
+    ptz-speed: 50
+    # TODO [可选] 收到心跳后自动上线， 重启服务后会将所有设备置为离线，默认false，等待注册后上线。设置为true则收到心跳设置为上线。
+    # keepalliveToOnline: false
+    # 是否存储alarm信息
     alarm: false
 #zlm 默认服务器配置
 media:
@@ -74,12 +110,31 @@ media:
     id: ZbnQN5csqxrPix7a
     # [必须修改] zlm服务器的内网IP
     ip: ${MEDIA_IP}
+    # 单独配置streamIp, 方便使用域名生成播放连接
+    stream-ip: ${STREAM_HOST}
+    # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
+    sdp-ip: ${SIP_IP}
     # [必须修改] zlm服务器的http.port
     http-port: ${MEDIA_PORT}
     hook-ip: ${WVP_IP}
+    # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
+    http-ssl-port:
+    # [可选] zlm服务器的rtmp.port, 置空使用zlm配置文件配置
+    rtmp-port:
+    # [可选] zlm服务器的rtmp.sslport, 置空使用zlm配置文件配置
+    rtmp-ssl-port:
+    # [可选] zlm服务器的 rtp_proxy.port, 置空使用zlm配置文件配置
+    rtp-proxy-port:
+    # [可选] zlm服务器的 rtsp.port, 置空使用zlm配置文件配置
+    rtsp-port:
+    # [可选] zlm服务器的 rtsp.sslport, 置空使用zlm配置文件配置
+    rtsp-ssl-port:
+    # [可选] 是否自动配置ZLM, 如果希望手动配置ZLM, 可以设为false, 不建议新接触的用户修改
+    auto-config: true
     # [可选] zlm服务器的hook.admin_params=secret
     secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
-    stream-none-reader-delay-ms:  30000
+    # [可选] zlm服务器的general.streamNoneReaderDelayMS
+    stream-none-reader-delay-ms:  30000  # 无人观看多久自动关闭流, -1表示永不自动关闭,即 关闭按需拉流
     # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
     rtp:
         # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
@@ -90,33 +145,23 @@ media:
         send-port-range: 30000,30500 # 端口范围
     # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
     record-assist-port: ${ASSIST_PORT}
-    auto-config: true
-    sdp-ip: ${SIP_IP}
-    # 单独配置streamIp, 方便使用域名生成播放连接
-    stream-ip: ${STREAM_HOST}
+
 # [可选] 日志配置, 一般不需要改
 logging:
     config: classpath:logback-spring-local.xml
 
 # [根据业务需求配置]
 user-settings:
-    # 推流直播是否录制
-    record-push-live: false
-    auto-apply-play: true
-    # interface-authentication: false
-    # 点播等待超时时间,单位：毫秒
-    play-timeout: 30000
-    # interface-authentication-excludes:
-    #     - /index/hook/**
-    #     - /api/v1/**
     # [可选] 服务ID，不写则为000000
-    server-id: 
+    server-id:
     # [可选] 自动点播， 使用固定流地址进行播放时，如果未点播则自动进行点播, 需要rtp.enable=true
+    auto-apply-play: true
     # [可选] 部分设备需要扩展SDP，需要打开此设置
     senior-sdp: false
     # 保存移动位置历史轨迹：true:保留历史数据，false:仅保留最后的位置(默认)
     save-position-history: false
     # 点播等待超时时间,单位：毫秒
+    play-timeout: 30000
     # 等待音视频编码信息再返回， true： 可以根据编码选择合适的播放器，false： 可以更快点播
     wait-track: false
     # 是否开启接口鉴权
@@ -127,12 +172,14 @@ user-settings:
     interface-authentication-excludes:
         - /api/v1/**
     # 推流直播是否录制
+    record-push-live: false
     # 国标是否录制
     record-sip: true
     # 是否将日志存储进数据库
     logInDatebase: true
     # 第三方匹配，用于从stream钟获取有效信息
-    # thirdPartyGBIdReg: [\s\S]*
+    thirdPartyGBIdReg: "[\\s\\S]*"
+
 # 在线文档： swagger-ui（生产环境建议关闭）
 swagger-ui:
     enabled: true
