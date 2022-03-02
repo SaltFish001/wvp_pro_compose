@@ -25,7 +25,10 @@ RUN cd /home/wvp-GB28181-pro/web_src && \
 RUN cd /home/wvp-GB28181-pro && \
         mvn clean package -Dmaven.test.skip=true && \
         cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/ && \
-        cp -r /home/wvp-GB28181-pro/src/main/resources /opt/wvp/config
+        cp -r /home/wvp-GB28181-pro/src/main/resources/banner.txt /opt/wvp/config/banner.txt && \
+        cp -r /home/wvp-GB28181-pro/src/main/resources/logback-spring-local.xml /opt/wvp/config/logback-spring-local.xml && \
+        cp -r /home/wvp-GB28181-pro/src/main/resources/wvpssl.jks /opt/wvp/config/wvpssl.jks
+
 
 RUN cd /home && \
         git clone "${gitUrl}/wvp-pro-assist.git"

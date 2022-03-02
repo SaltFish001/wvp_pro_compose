@@ -12,7 +12,6 @@ services:
       - ${REDIS_LOG}:/logs
     command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
   wvpMysql:
-    container_name: mysql # 指定容器的名称
     image: mysql:5.6 # 指定镜像和版本
     restart: always # 指定开机重启
     command: --default-authentication-plugin=mysql_native_password
@@ -73,7 +72,7 @@ services:
       - ./wvp/config/application.yml:/opt/wvp/config/application.yml
       - ./wvp/config/application.assist.yml:/opt/assist/config/application.yml
       - ./wvp/config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
-      - ./logs:/opt/wvp/log #保存wvp日志
+      - ./logs/wvp:/opt/wvp/logs #保存wvp日志
       - ./logs/media:/opt/media/log #保存zlm日志
     depends_on:
       - wvpMysql
