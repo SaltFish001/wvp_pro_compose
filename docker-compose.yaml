@@ -1,6 +1,6 @@
 version: "3"
 services:
-  redis:
+  wvpRedis:
     image: redis:6.2-rc3-alpine3.13
     restart: always
     environment:
@@ -11,7 +11,7 @@ services:
       - ${REDIS_DATA}:/data
       - ${REDIS_LOG}:/logs
     command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
-  mysql:
+  wvpMysql:
     container_name: mysql # 指定容器的名称
     image: mysql:5.6 # 指定镜像和版本
     restart: always # 指定开机重启
@@ -45,13 +45,15 @@ services:
       WVP_PORT: ${WVP_PORT}
       WVP_DB_PATH: ${WVP_DB_PATH}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      REDIS_HOST: redis
+      REDIS_HOST: wvpRedis
       REDIS_PORT: 6379
       REDIS_PWD: ${REDIS_PASSWORD}
       MEDIA_PORT: ${MEDIA_PORT}
       ASSIST_PORT: ${ASSIST_PORT}
       RECORD_PATH: ${RECORD_PATH}
       STREAM_HOST: ${STREAM_HOST}
+      DRUID_USER: ${DRUID_USER}
+      DRUID_PASS: ${DRUID_PASS}
     ports:
       - 30000-30500:30000-30500/udp
       - 30000-30500:30000-30500/tcp
@@ -66,13 +68,13 @@ services:
       - ${MEDIA_PORT}
       - ${WVP_PORT}
     volumes:
-      - ${RECORD_PATH}:/media/record:rw # 录像保存目录
+      - ./record:/media/record:rw # 录像保存目录
       - ./wvp/config/run.sh:/opt/wvp/run.sh
       - ./wvp/config/application.yml:/opt/wvp/config/application.yml
       - ./wvp/config/application.assist.yml:/opt/assist/config/application.yml
       - ./wvp/config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
-      - ${WVP_LOGS}:/opt/wvp/logs #保存wvp日志
-      - ${MEDIA_LOGS}:/opt/media/log #保存zlm日志
+      - ./logs:/opt/wvp/log #保存wvp日志
+      - ./logs/media:/opt/media/log #保存zlm日志
     depends_on:
-      - mysql
-      - redis
+      - wvpMysql
+      - wvpRedis
