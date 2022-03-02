@@ -1,6 +1,8 @@
 # wvp_pro_compose
 基于本人踩坑出来的WVP配置
 ## 如何使用
+  step -1： ``请一定仔细阅读配置的各项说明``
+  
   step 0: 找教程安装Docker及docker-compose
 
   step 1: 复制一份``.env.example`` 到根目录， 并改名``.env``
