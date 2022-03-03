@@ -14,3 +14,5 @@
   step 4: 执行
 
       docker-compose up -d
+  
+  step 5: 遇到问题可以在WVP-PRO官方交流群找咸鱼(SaltFish)管理员
