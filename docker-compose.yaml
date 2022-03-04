@@ -12,7 +12,7 @@ services:
       - ${REDIS_LOG}:/logs
     command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
   wvpMysql:
-    image: mysql:5.6 # 指定镜像和版本
+    image: mysql:8 # 指定镜像和版本
     restart: always # 指定开机重启
     command: --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
