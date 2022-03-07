@@ -174,7 +174,7 @@ user-settings:
     # 推流直播是否录制
     record-push-live: false
     # 国标是否录制
-    record-sip: true
+    record-sip: false
     # 是否将日志存储进数据库
     logInDatebase: true
     # 第三方匹配，用于从stream钟获取有效信息
