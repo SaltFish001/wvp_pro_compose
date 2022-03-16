@@ -6,7 +6,7 @@ services:
     environment:
       TZ: ${TZ}
     ports:
-      - 6379:6379
+      - 63790:6379
     volumes:
       - ${REDIS_DATA}:/data
       - ${REDIS_LOG}:/logs
@@ -20,7 +20,7 @@ services:
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
     ports:
-      - 3306:3306
+      - 33060:3306
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
