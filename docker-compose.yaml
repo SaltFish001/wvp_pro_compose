@@ -71,6 +71,7 @@ services:
       - ./wvp/config/run.sh:/opt/wvp/run.sh
       - ./wvp/config/application.yml:/opt/wvp/config/application.yml
       - ./wvp/config/application.assist.yml:/opt/assist/config/application.yml
+      - ./wvp/config/logback-spring-local.xml:/opt/assist/config/logback-spring-local.xml
       - ./wvp/config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
       - ./logs/assist:/opt/assist/logs # 保存assist日志
       - ./logs/wvp:/opt/wvp/logs # 保存wvp日志
