@@ -19,7 +19,7 @@ RUN cd /home && \
         git clone "${gitUrl}/wvp-GB28181-pro.git"
 
 RUN cd /home/wvp-GB28181-pro/web_src && \
-        npm install && \
+        npm --registry=https://registry.npmmirror.com install install && \
         npm run build
 
 RUN cd /home/wvp-GB28181-pro && \
