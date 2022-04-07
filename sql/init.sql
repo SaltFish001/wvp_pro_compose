@@ -14,9 +14,10 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE Database IF NOT EXISTS `wvp`;
 
-use wvp;
+--
+-- Table structure for table `device`
+--
 
 DROP TABLE IF EXISTS `device`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -39,6 +40,9 @@ CREATE TABLE `device` (
                           `port` int NOT NULL,
                           `expires` int NOT NULL,
                           `subscribeCycleForCatalog` int NOT NULL,
+                          `subscribeCycleForMobilePosition` int NOT NULL,
+                          `mobilePositionSubmissionInterval` int DEFAULT 5 NOT NULL,
+                          `subscribeCycleForAlarm` int NOT NULL,
                           `hostAddress` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
                           `charset` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
                           PRIMARY KEY (`id`),
