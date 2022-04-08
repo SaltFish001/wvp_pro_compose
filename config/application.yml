@@ -93,7 +93,7 @@ sip:
     # [可选]
     id: ${WVP_ID:44010200492000000001}
     # [可选] 默认设备认证密码，后续扩展使用设备单独密码, 移除密码将不进行校验
-    password: ${WVP_PASSWORD:admin123}
+    password: ${SIP_PASSWORD:admin123}
     # [可选] 心跳超时时间， 建议设置为心跳周期的三倍
     keepalive-timeout: 255
     # [可选] 国标级联注册失败，再次发起注册的时间间隔。 默认60秒
@@ -109,13 +109,13 @@ media:
     # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
     id: ZbnQN5csqxrPix7a
     # [必须修改] zlm服务器的内网IP
-    ip: ${MEDIA_IP}
+    ip: ${ZLM_IP}
     # 单独配置streamIp, 方便使用域名生成播放连接
     stream-ip: ${STREAM_HOST}
     # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
     sdp-ip: ${SIP_IP}
     # [必须修改] zlm服务器的http.port
-    http-port: ${MEDIA_PORT}
+    http-port: ${ZLM_PORT}
     hook-ip: ${WVP_IP}
     # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
     http-ssl-port:
@@ -138,7 +138,7 @@ media:
     # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
     rtp:
         # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
-        enable: true
+        enable: false
         # [可选] 在此范围内选择端口用于媒体流传输,
         port-range: 30000,30500 # 端口范围
         # [可选] 国标级联在此范围内选择端口发送媒体流,

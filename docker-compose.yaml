@@ -30,16 +30,16 @@ services:
       - ./mysql:/var/lib/mysql:rw # 挂载数据目录
   wvp:
     build:
-      context: ./wvp
+      context: ./build/wvp
     restart: always
     environment:
       TZ: ${TZ}
       WVP_DOMAIN: ${WVP_DOMAIN}
       WVP_ID: ${WVP_ID}
-      WVP_PASSWORD: ${WVP_PASSWORD}
+      SIP_PASSWORD: ${SIP_PASSWORD}
       WVP_IP: ${WVP_IP}
       SIP_IP: ${SIP_IP}
-      MEDIA_IP: ${MEDIA_IP}
+      ZLM_IP: ${ZLM_IP}
       WVP_PORT: ${WVP_PORT}
       WVP_DB_PATH: ${WVP_DB_PATH}
       MYSQL_USERNAME: ${MYSQL_USERNAME}
@@ -47,34 +47,43 @@ services:
       REDIS_HOST: wvpRedis
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PWD: ${REDIS_PASSWORD}
-      MEDIA_PORT: ${MEDIA_PORT}
+      ZLM_PORT: ${ZLM_PORT}
       ASSIST_PORT: ${ASSIST_PORT}
-      RECORD_PATH: ${RECORD_PATH}
       STREAM_HOST: ${STREAM_HOST}
       DRUID_USER: ${DRUID_USER}
       DRUID_PASS: ${DRUID_PASS}
     ports:
-      - 30000-30500:30000-30500/udp
-      - 30000-30500:30000-30500/tcp
       - 5060:5060
       - 5060:5060/udp
-      # 按需调整宿主机的端口
-      - ${MEDIA_PORT}:${MEDIA_PORT}
       - ${WVP_PORT}:${WVP_PORT}
-      # - 554:554
-      # - 1935:1935
     expose:
-      - ${MEDIA_PORT}
       - ${WVP_PORT}
     volumes:
-      - ./record:/media/record:rw # 录像保存目录
-      - ./wvp/config/run.sh:/opt/wvp/run.sh
-      - ./wvp/config/application.yml:/opt/wvp/config/application.yml
-      - ./wvp/config/application.assist.yml:/opt/assist/config/application.yml
-      - ./wvp/config/logback-spring-local.xml:/opt/assist/config/logback-spring-local.xml
-      - ./wvp/config/config.ini:/opt/media/config.ini:rw # 配置rw方便自动生成配置
-      - ./logs/assist:/opt/assist/logs # 保存assist日志
+      - ./config:/config
       - ./logs/wvp:/opt/wvp/logs # 保存wvp日志
+    depends_on:
+      - wvpMysql
+      - wvpRedis
+      - zlm
+  zlm:
+    build:
+      context: ./build/zlm
+    restart: always
+    environment:
+      TZ: ${TZ}
+      REDIS_HOST: wvpRedis
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PWD: ${REDIS_PASSWORD}
+      ASSIST_PORT: ${ASSIST_PORT}
+    ports:
+      - ${STREAM_PORT}:${STREAM_PORT}/udp
+      - ${STREAM_PORT}:${STREAM_PORT}/tcp
+      # 按需调整宿主机的端口
+      - ${ZLM_PORT}:${ZLM_PORT}
+    volumes:
+      - ${RECORD_PATH}:/media/record:rw # 录像保存目录
+      - ./config:/config
+      - ./logs/assist:/opt/assist/logs # 保存assist日志
       - ./logs/media:/opt/media/log # 保存zlm日志
     depends_on:
       - wvpMysql
