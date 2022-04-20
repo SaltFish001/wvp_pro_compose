@@ -7,7 +7,7 @@ COPY sources.list /etc/apt/sources.list
 
 RUN export DEBIAN_FRONTEND=noninteractive &&\
         apt-get update && \
-        apt-get install -y --no-install-recommends openjdk-11-jre git maven nodejs npm build-essential \
+        apt-get install -y --no-install-recommends openjdk-11-jre git libssl-dev libsdl-dev libavcodec-dev libavutil-dev maven nodejs npm build-essential \
         cmake ca-certificates openssl ffmpeg &&\
         mkdir -p /opt/wvp/config /opt/wvp/heapdump /opt/wvp/config /opt/assist/config /opt/assist/heapdump /opt/media/www/record
 
@@ -70,7 +70,7 @@ COPY sources.list /etc/apt/sources.list
 
 RUN export DEBIAN_FRONTEND=noninteractive &&\
         apt-get update && \
-        apt-get install -y --fix-missing --no-install-recommends openjdk-11-jre ca-certificates ffmpeg language-pack-zh-hans && \
+        apt-get install -y --fix-missing --no-install-recommends openjdk-11-jre ca-certificates openssl ffmpeg language-pack-zh-hans && \
         apt-get autoremove -y && \
         apt-get clean -y && \
         rm -rf /var/lib/apt/lists/*dic
