@@ -19,7 +19,7 @@ RUN cd /home && \
         git clone "${gitUrl}/wvp-GB28181-pro.git"
 
 RUN cd /home/wvp-GB28181-pro/web_src && \
-        npm --registry=http://registry.npm.taobao.org install install && \
+        npm --registry=http://registry.npm.taobao.org install && \
         npm run build
 
 RUN cd /home/wvp-GB28181-pro && \
