@@ -1,3 +1,4 @@
+use wvp;
 alter table parent_platform
     add startOfflinePush int default 0 null;
 

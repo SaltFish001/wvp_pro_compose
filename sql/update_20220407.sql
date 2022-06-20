@@ -1,3 +1,4 @@
+use wvp;
 alter table device
     add subscribeCycleForMobilePosition int null;
 

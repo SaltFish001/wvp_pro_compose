@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.28, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.7.3-MariaDB, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: wvp
+-- Host: 127.0.0.1    Database: wvp3
 -- ------------------------------------------------------
--- Server version	8.0.28-0ubuntu0.20.04.3
+-- Server version	8.0.0-dmr
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -473,6 +473,7 @@ CREATE TABLE `stream_push` (
                                `createStamp` bigint(20) DEFAULT NULL,
                                `aliveSecond` int(11) DEFAULT NULL,
                                `mediaServerId` varchar(50) DEFAULT NULL,
+                               `serverId` varchar(50) not NULL,
                                PRIMARY KEY (`id`),
                                UNIQUE KEY `stream_push_pk` (`app`,`stream`)
 ) ENGINE=InnoDB AUTO_INCREMENT=300838 DEFAULT CHARSET=utf8mb4;
