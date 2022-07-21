@@ -22,7 +22,7 @@ spring:
         poolMaxIdle: 500
         # [可选] 最大的等待时间(秒)
         poolMaxWait: 5
-    # [可选] jdbc数据库配置, 项目使用sqlite作为数据库，一般不需要配置
+    # [必选] jdbc数据库配置
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -47,13 +47,13 @@ spring:
             # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
             connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000
             #stat-view-servlet.url-pattern: /admin/druid/*
+
 # druid管理监控页面的一些配置
 rj-druid-manage:
-    allow:          # 访问druid监控页面的IP白名单
-    deny:           # 访问druid监控页面IP黑名单
+    allow:                        # 访问druid监控页面的IP白名单
+    deny: 192.168.1.100           # 访问druid监控页面IP黑名单
     loginUsername: ${DRUID_USER}          # 访问druid监控页面账号
     loginPassword: ${DRUID_PASS}    # 访问druid监控页面密码
-
 
 #mybatis:
 #    configuration:
@@ -104,6 +104,7 @@ sip:
     # keepalliveToOnline: false
     # 是否存储alarm信息
     alarm: false
+
 #zlm 默认服务器配置
 media:
     # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
@@ -134,12 +135,12 @@ media:
     # [可选] zlm服务器的hook.admin_params=secret
     secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
     # [可选] zlm服务器的general.streamNoneReaderDelayMS
-    stream-none-reader-delay-ms:  30000  # 无人观看多久自动关闭流, -1表示永不自动关闭,即 关闭按需拉流
+    stream-none-reader-delay-ms:  18000  # 无人观看多久自动关闭流, -1表示永不自动关闭,即 关闭按需拉流
     # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
     rtp:
         # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
-        enable: false
-        # [可选] 在此范围内选择端口用于媒体流传输,
+        enable: true
+        # [可选] 在此范围内选择端口用于媒体流传输, 必须提前在zlm上配置该属性，不然自动配置此属性可能不成功
         port-range: 30000,30500 # 端口范围
         # [可选] 国标级联在此范围内选择端口发送媒体流,
         send-port-range: 30000,30500 # 端口范围
@@ -155,17 +156,15 @@ user-settings:
     # [可选] 服务ID，不写则为000000
     server-id:
     # [可选] 自动点播， 使用固定流地址进行播放时，如果未点播则自动进行点播, 需要rtp.enable=true
-    auto-apply-play: true
+    auto-apply-play: false
     # [可选] 部分设备需要扩展SDP，需要打开此设置
     senior-sdp: false
     # 保存移动位置历史轨迹：true:保留历史数据，false:仅保留最后的位置(默认)
     save-position-history: false
     # 点播等待超时时间,单位：毫秒
-    play-timeout: 30000
+    play-timeout: 3000
     # 上级点播等待超时时间,单位：毫秒
     platform-play-timeout: 60000
-    # 等待音视频编码信息再返回， true： 可以根据编码选择合适的播放器，false： 可以更快点播
-    wait-track: false
     # 是否开启接口鉴权
     interface-authentication: true
     # 自动配置redis 可以过期事件
@@ -179,8 +178,6 @@ user-settings:
     record-sip: false
     # 是否将日志存储进数据库
     logInDatebase: true
-    # 第三方匹配，用于从stream钟获取有效信息
-    thirdPartyGBIdReg: "[\\s\\S]*"
 
 # 在线文档： swagger-ui（生产环境建议关闭）
 swagger-ui:
