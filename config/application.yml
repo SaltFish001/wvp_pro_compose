@@ -93,7 +93,7 @@ sip:
     # [可选]
     id: ${WVP_ID:44010200492000000001}
     # [可选] 默认设备认证密码，后续扩展使用设备单独密码, 移除密码将不进行校验
-    password: ${SIP_PASSWORD:admin123}
+    password: ${WVP_PASSWORD:admin123}
     # [可选] 心跳超时时间， 建议设置为心跳周期的三倍
     keepalive-timeout: 255
     # [可选] 国标级联注册失败，再次发起注册的时间间隔。 默认60秒
@@ -110,13 +110,13 @@ media:
     # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
     id: ZbnQN5csqxrPix7a
     # [必须修改] zlm服务器的内网IP
-    ip: ${ZLM_IP}
+    ip: ${MEDIA_IP}
     # 单独配置streamIp, 方便使用域名生成播放连接
     stream-ip: ${STREAM_HOST}
     # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
     sdp-ip: ${SIP_IP}
     # [必须修改] zlm服务器的http.port
-    http-port: ${ZLM_PORT}
+    http-port: ${MEDIA_PORT}
     hook-ip: ${WVP_IP}
     # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
     http-ssl-port:
@@ -142,7 +142,7 @@ media:
         enable: true
         # [可选] 在此范围内选择端口用于媒体流传输, 必须提前在zlm上配置该属性，不然自动配置此属性可能不成功
         port-range: 30000,30500 # 端口范围
-        # [可选] 国标级联在此范围内选择端口发送媒体流,
+        # [可选] 国标级联在此范围内选择端口发送媒体流
         send-port-range: 30000,30500 # 端口范围
     # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
     record-assist-port: ${ASSIST_PORT}
