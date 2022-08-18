@@ -110,13 +110,13 @@ media:
     # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
     id: ZbnQN5csqxrPix7a
     # [必须修改] zlm服务器的内网IP
-    ip: ${MEDIA_IP}
+    ip: ${ZLM_IP}
     # 单独配置streamIp, 方便使用域名生成播放连接
     stream-ip: ${STREAM_HOST}
     # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
     sdp-ip: ${SIP_IP}
     # [必须修改] zlm服务器的http.port
-    http-port: ${MEDIA_PORT}
+    http-port: ${ZLM_PORT}
     hook-ip: ${WVP_IP}
     # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
     http-ssl-port:

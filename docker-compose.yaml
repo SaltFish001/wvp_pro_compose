@@ -26,7 +26,7 @@ services:
       SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
     volumes:
       - ./conf.d:/etc/mysql/conf.d
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql/:/docker-entrypoint-initdb.d/
       - ./mysql:/var/lib/mysql:rw # 挂载数据目录
   wvp:
     build:
@@ -79,7 +79,7 @@ services:
       - ${STREAM_PORT}:${STREAM_PORT}/udp
       - ${STREAM_PORT}:${STREAM_PORT}/tcp
       # 按需调整宿主机的端口
-      - ${ZLM_PORT}:${ZLM_PORT}
+      # - ${ZLM_PORT}:${ZLM_PORT}
     volumes:
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录
       - ./config:/config
