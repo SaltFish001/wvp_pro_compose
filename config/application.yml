@@ -172,8 +172,6 @@ user-settings:
     platform-play-timeout: 60000
     # 是否开启接口鉴权
     interface-authentication: true
-    # 自动配置redis 可以过期事件
-    redis-config: true
     # 接口鉴权例外的接口, 即不进行接口鉴权的接口,尽量详细书写，尽量不用/**，至少两级目录
     interface-authentication-excludes:
         - /api/v1/**
@@ -184,12 +182,9 @@ user-settings:
     # 是否将日志存储进数据库
     logInDatebase: true
 
-# 在线文档： swagger-ui（生产环境建议关闭）
-swagger-ui:
-    enabled: true
-
-# 版本信息， 不需修改
-version:
-    version: "@project.version@"
-    description: "@project.description@"
-    artifact-id: "@project.artifactId@"
+# 关闭在线文档（生产环境建议关闭）
+springdoc:
+    api-docs:
+        enabled: true
+    swagger-ui:
+        enabled: true
