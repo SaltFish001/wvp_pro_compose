@@ -140,7 +140,6 @@ media:
     # [可选] zlm服务器的hook.admin_params=secret
     secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
     # [可选] zlm服务器的general.streamNoneReaderDelayMS
-    stream-none-reader-delay-ms:  18000  # 无人观看多久自动关闭流, -1表示永不自动关闭,即 关闭按需拉流
     # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
     rtp:
         # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
@@ -172,6 +171,8 @@ user-settings:
     platform-play-timeout: 60000
     # 是否开启接口鉴权
     interface-authentication: true
+    # 自动配置redis 可以过期事件
+    redis-config: true
     # 接口鉴权例外的接口, 即不进行接口鉴权的接口,尽量详细书写，尽量不用/**，至少两级目录
     interface-authentication-excludes:
         - /api/v1/**
@@ -181,6 +182,10 @@ user-settings:
     record-sip: false
     # 是否将日志存储进数据库
     logInDatebase: true
+    # 使用推流状态作为推流通道状态
+    use-pushing-as-status: true
+    # 按需拉流, true：有人观看拉流，无人观看释放， false：拉起后不自动释放
+    stream-on-demand: true
 
 # 关闭在线文档（生产环境建议关闭）
 springdoc:
@@ -188,3 +193,9 @@ springdoc:
         enabled: true
     swagger-ui:
         enabled: true
+
+# 版本信息， 不需修改
+version:
+    version: "@project.version@"
+    description: "@project.description@"
+    artifact-id: "@project.artifactId@"
