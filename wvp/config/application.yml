@@ -98,7 +98,7 @@ sip:
     # [可选]
     id: ${WVP_ID:44010200492000000001}
     # [可选] 默认设备认证密码，后续扩展使用设备单独密码, 移除密码将不进行校验
-    password: ${WVP_PASSWORD:admin123}
+    password: ${SIP_PASSWORD:admin123}
     # [可选] 心跳超时时间， 建议设置为心跳周期的三倍
     keepalive-timeout: 255
     # [可选] 国标级联注册失败，再次发起注册的时间间隔。 默认60秒
