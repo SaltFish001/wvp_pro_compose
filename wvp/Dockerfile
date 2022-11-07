@@ -17,7 +17,8 @@ RUN cd /home && \
         cp maven/settings.xml /usr/share/maven/conf/
 
 RUN cd /home && \
-        git clone "${gitUrl}/wvp-GB28181-pro.git"
+        git clone "${gitUrl}/wvp-GB28181-pro.git" && \
+        git checkout a3d583e3b09f3cac9604d09dcd106e5491eb68b9
 
 RUN cd /home/wvp-GB28181-pro/web_src && \
         npm --registry=http://registry.npm.taobao.org install && \
