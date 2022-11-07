@@ -12,14 +12,16 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
         mkdir -p /opt/assist/config /opt/assist/heapdump /opt/media/www/record
 
 RUN cd /home && \
-        git clone "${gitUrl}/wvp-pro-assist.git"
+        git clone "${gitUrl}/wvp-pro-assist.git" && \
+        git checkout a3d583e3b09f3cac9604d09dcd106e5491eb68b9
 
 RUN cd /home/wvp-pro-assist && \
         mvn clean package -Dmaven.test.skip=true && \
         cp /home/wvp-pro-assist/target/*.jar /opt/assist/ 
 
 RUN cd /home && \
-        git clone --depth=1 "${zlmGitUrl}"
+        git clone --depth=1 "${zlmGitUrl}" && \
+        git checkout c8d95617a0aa7a2caf66e8cd924b6c23e695f0ed
 
 RUN cd /home/ZLMediaKit && \
         git submodule update --init --recursive && \
