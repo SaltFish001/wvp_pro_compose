@@ -13,7 +13,6 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
 
 RUN cd /home && \
         git clone "${gitUrl}/maven.git" -b wvp-28181-2.0 && \
-        git checkout fb1d9ca50ab23a5361ea66ab0527be31b21cfd89 && \
         cp maven/settings.xml /usr/share/maven/conf/
 
 RUN cd /home && \
