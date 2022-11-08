@@ -12,11 +12,11 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
         mkdir -p /opt/wvp/config /opt/wvp/heapdump /opt/wvp/config /opt/assist/config /opt/assist/heapdump /opt/media/www/record
 
 RUN cd /home && \
-        git clone "${gitUrl}/maven.git" -b wvp-28181-2.0 && \
+        git clone "${gitUrl}/maven.git" && \
         cp maven/settings.xml /usr/share/maven/conf/
 
 RUN cd /home && \
-        git clone "${gitUrl}/wvp-GB28181-pro.git" && \
+        git clone "${gitUrl}/wvp-GB28181-pro.git" -b wvp-28181-2.0 && \
         git checkout a3d583e3b09f3cac9604d09dcd106e5491eb68b9
 
 RUN cd /home/wvp-GB28181-pro/web_src && \
