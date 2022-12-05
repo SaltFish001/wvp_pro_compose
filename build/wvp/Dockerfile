@@ -15,6 +15,7 @@ RUN cd /home && \
 
 RUN cd /home && \
         git clone "${gitUrl}/wvp-GB28181-pro.git" -b wvp-28181-2.0 && \
+        cd wvp-GB28181-pro &&\
         git checkout fb1d9ca50ab23a5361ea66ab0527be31b21cfd89
 
 RUN cd /home/wvp-GB28181-pro/web_src && \
