@@ -1,0 +1,21 @@
+{
+  "name": "my-prisma-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "initDB": "prisma migrate dev",
+    "start": "npm run deploy && node index.js",
+    "deploy": "prisma migrate deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^4.9.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.9.0",
+    "restana": "^4.9.7"
+  }
+}

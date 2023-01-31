@@ -1,0 +1,124 @@
+version: "3"
+
+services:
+  # 基础服务，可根据情况替换成第三方
+  redis:
+    image: redis:6.2-rc3-alpine3.13
+    restart: always
+    environment:
+      TZ: ${TZ}
+    # 端口映射，非必要
+    ports:
+      - 63790:6379
+    volumes:
+      - ${REDIS_DATA}:/data
+      - ${REDIS_LOG}:/logs
+    command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
+  mysql:
+    image: mysql:8 # 指定镜像和版本
+    restart: always # 指定开机重启
+    command: --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+    # 端口映射，非必要
+    ports:
+      - 33060:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - ./config/mysql/:/etc/mysql/conf.d
+      - ${BASE_PATH}/mysql:/var/lib/mysql:rw # 挂载数据目录
+  sql-manager:
+    build:
+      context: ./buildFiles/sqlManager
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: ${TZ}
+      DATABASE_URL: ${DATABASE_URL}
+  gateway:
+    build:
+      context: ./buildFiles/gateway
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PORT: 443
+      CLUSTER_NUMBER: 4
+      NODE_ENV: prod
+    ports:
+      - 443:443
+    volumes:
+      - ./config/gateway/keys:/project/keys
+      - ./config/gateway/routes.json:/project/routes.json
+      - ${BASE_PATH}/logs/gateway:/project/logs
+    depends_on:
+      - wvp
+      - zlm
+
+  # 主要服务
+  wvp:
+    build:
+      context: ./buildFiles/wvp
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: ${TZ}
+      SIP_DOMAIN: ${SIP_DOMAIN}
+      SIP_ID: ${SIP_ID}
+      SIP_PASSWORD: ${SIP_PASSWORD}
+      WVP_IP: ${WVP_IP}
+      SIP_IP: ${SIP_IP}
+      ZLM_IP: ${ZLM_IP}
+      WVP_DB_PATH: ${WVP_DB_PATH}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PWD: ${REDIS_PASSWORD}
+      ASSIST_PORT: ${ASSIST_PORT}
+      STREAM_HOST: ${STREAM_HOST}
+      DRUID_USER: ${DRUID_USER}
+      DRUID_PASS: ${DRUID_PASS}
+    ports:
+      - 5060:5060
+      - 5060:5060/udp
+      # 不再默认提供对宿主机端口
+      - 3000:80
+    volumes:
+      - ./config/wvp:/config
+      - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
+    depends_on:
+      mysql:
+          condition: service_started
+      redis:
+          condition: service_started
+      zlm:
+          condition: service_started
+      sql-manager:
+        condition: service_started
+  zlm:
+    build:
+      context: ./buildFiles/zlm
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: ${TZ}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PWD: ${REDIS_PASSWORD}
+      ASSIST_PORT: ${ASSIST_PORT}
+    ports:
+      - ${STREAM_PORT}:${STREAM_PORT}/udp
+      - ${STREAM_PORT}:${STREAM_PORT}/tcp
+      # 不再默认提供对宿主机端口
+    volumes:
+      - ./config/zlm:/config
+      - ${RECORD_PATH}:/media/record:rw # 录像保存目录
+      - ${BASE_PATH}/logs/assist:/opt/assist/logs # 保存assist日志
+      - ${BASE_PATH}/logs/media:/opt/media/log # 保存zlm日志
+    depends_on:
+      - redis

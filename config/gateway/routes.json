@@ -1,0 +1,33 @@
+{
+  "hostnames2prefix": [
+    {
+      "hostname": "wvp.zjy.com",
+      "prefix": "/wvp"
+    },
+    {
+      "hostname": "zlm.zjy.com",
+      "prefix": "/zlm"
+    }
+  ],
+  "gatewayRoutes": {
+    "wvp_pro": {
+      "proxyType": "http",
+      "target": "http://wvp:80",
+      "prefix": "/wvp",
+      "pathRegex": "(.*)",
+      "prefixRewrite": ""
+    },
+    "zlm": {
+      "proxyType": "http",
+      "target": "http://zlm:80",
+      "prefix": "/zlm",
+      "pathRegex": "(.*)",
+      "prefixRewrite": ""
+    },
+    "zlm_ws": {
+      "proxyType": "websocket",
+      "target": "ws://zlm:80",
+      "prefix": "/rtp"
+    }
+  }
+}

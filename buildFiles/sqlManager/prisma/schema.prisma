@@ -1,0 +1,286 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model device {
+  id                               Int     @id @default(autoincrement())
+  deviceId                         String  @unique(map: "device_deviceId_uindex") @db.VarChar(50)
+  name                             String? @db.VarChar(255)
+  manufacturer                     String? @db.VarChar(255)
+  model                            String? @db.VarChar(255)
+  firmware                         String? @db.VarChar(255)
+  transport                        String? @db.VarChar(50)
+  streamMode                       String? @db.VarChar(50)
+  online                           String? @db.VarChar(50)
+  registerTime                     String? @db.VarChar(50)
+  keepaliveTime                    String? @db.VarChar(50)
+  ip                               String? @db.VarChar(50)
+  createTime                       String  @db.VarChar(50)
+  updateTime                       String  @db.VarChar(50)
+  port                             Int?
+  expires                          Int?
+  subscribeCycleForCatalog         Int?
+  hostAddress                      String? @db.VarChar(50)
+  charset                          String  @db.VarChar(50)
+  subscribeCycleForMobilePosition  Int?
+  mobilePositionSubmissionInterval Int?    @default(5)
+  subscribeCycleForAlarm           Int?
+  ssrcCheck                        Int?    @default(0)
+  geoCoordSys                      String  @db.VarChar(50)
+  treeType                         String  @db.VarChar(50)
+  custom_name                      String? @db.VarChar(255)
+  password                         String? @db.VarChar(255)
+  sdpIp                            String? @db.VarChar(50)
+  localIp                          String? @db.VarChar(50)
+  keepaliveIntervalTime            Int?
+}
+
+model device_alarm {
+  id               Int     @id @default(autoincrement())
+  deviceId         String  @db.VarChar(50)
+  channelId        String  @db.VarChar(50)
+  alarmPriority    String  @db.VarChar(50)
+  alarmMethod      String? @db.VarChar(50)
+  alarmTime        String  @db.VarChar(50)
+  alarmDescription String? @db.VarChar(255)
+  longitude        Float?
+  latitude         Float?
+  alarmType        String? @db.VarChar(50)
+  createTime       String? @db.VarChar(50)
+}
+
+model device_channel {
+  id              Int      @id @unique(map: "device_channel_id_uindex") @default(autoincrement())
+  channelId       String   @db.VarChar(50)
+  name            String?  @db.VarChar(255)
+  manufacture     String?  @db.VarChar(50)
+  model           String?  @db.VarChar(50)
+  owner           String?  @db.VarChar(50)
+  civilCode       String?  @db.VarChar(50)
+  block           String?  @db.VarChar(50)
+  address         String?  @db.VarChar(50)
+  parentId        String?  @db.VarChar(50)
+  safetyWay       Int?
+  registerWay     Int?
+  certNum         String?  @db.VarChar(50)
+  certifiable     Int?
+  errCode         Int?
+  endTime         String?  @db.VarChar(50)
+  secrecy         String?  @db.VarChar(50)
+  ipAddress       String?  @db.VarChar(50)
+  port            Int?
+  password        String?  @db.VarChar(255)
+  PTZType         Int?
+  status          Int?
+  longitude       Float?
+  latitude        Float?
+  streamId        String?  @db.VarChar(50)
+  deviceId        String   @db.VarChar(50)
+  parental        String?  @db.VarChar(50)
+  hasAudio        Boolean? @db.Bit(1)
+  createTime      String   @db.VarChar(50)
+  updateTime      String   @db.VarChar(50)
+  subCount        Int?     @default(0)
+  longitudeGcj02  Float?
+  latitudeGcj02   Float?
+  longitudeWgs84  Float?
+  latitudeWgs84   Float?
+  businessGroupId String?  @db.VarChar(50)
+  gpsTime         String?  @db.VarChar(50)
+
+  @@unique([channelId, deviceId], map: "device_channel_pk")
+}
+
+model device_mobile_position {
+  id             Int     @id @default(autoincrement())
+  deviceId       String  @db.VarChar(50)
+  channelId      String  @db.VarChar(50)
+  deviceName     String? @db.VarChar(255)
+  time           String  @db.VarChar(50)
+  longitude      Float
+  latitude       Float
+  altitude       Float?
+  speed          Float?
+  direction      Float?
+  reportSource   String? @db.VarChar(50)
+  longitudeGcj02 Float?
+  latitudeGcj02  Float?
+  longitudeWgs84 Float?
+  latitudeWgs84  Float?
+  createTime     String? @db.VarChar(50)
+}
+
+model gb_stream {
+  gbStreamId    Int     @id @default(autoincrement())
+  app           String  @db.VarChar(255)
+  stream        String  @db.VarChar(255)
+  gbId          String  @unique(map: "gbId") @db.VarChar(50)
+  name          String? @db.VarChar(255)
+  longitude     Float?
+  latitude      Float?
+  streamType    String? @db.VarChar(50)
+  mediaServerId String? @db.VarChar(50)
+  createTime    String? @db.VarChar(50)
+
+  @@unique([app, stream], map: "app")
+}
+
+model log {
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(50)
+  type       String @db.VarChar(50)
+  uri        String @db.VarChar(200)
+  address    String @db.VarChar(50)
+  result     String @db.VarChar(50)
+  timing     BigInt
+  username   String @db.VarChar(50)
+  createTime String @db.VarChar(50)
+}
+
+model media_server {
+  id                String @id @db.VarChar(255)
+  ip                String @db.VarChar(50)
+  hookIp            String @db.VarChar(50)
+  sdpIp             String @db.VarChar(50)
+  streamIp          String @db.VarChar(50)
+  httpPort          Int
+  httpSSlPort       Int
+  rtmpPort          Int
+  rtmpSSlPort       Int
+  rtpProxyPort      Int
+  rtspPort          Int
+  rtspSSLPort       Int
+  autoConfig        Int
+  secret            String @db.VarChar(50)
+  rtpEnable         Int
+  rtpPortRange      String @db.VarChar(50)
+  recordAssistPort  Int
+  defaultServer     Int
+  createTime        String @db.VarChar(50)
+  updateTime        String @db.VarChar(50)
+  hookAliveInterval Int
+
+  @@unique([ip, httpPort], map: "media_server_i")
+}
+
+model parent_platform {
+  id                     Int      @id @unique(map: "parent_platform_id_uindex") @default(autoincrement())
+  enable                 Int?
+  name                   String?  @db.VarChar(255)
+  serverGBId             String   @unique(map: "parent_platform_pk") @db.VarChar(50)
+  serverGBDomain         String?  @db.VarChar(50)
+  serverIP               String?  @db.VarChar(50)
+  serverPort             Int?
+  deviceGBId             String   @db.VarChar(50)
+  deviceIp               String?  @db.VarChar(50)
+  devicePort             String?  @db.VarChar(50)
+  username               String?  @db.VarChar(255)
+  password               String?  @db.VarChar(50)
+  expires                String?  @db.VarChar(50)
+  keepTimeout            String?  @db.VarChar(50)
+  transport              String?  @db.VarChar(50)
+  characterSet           String?  @db.VarChar(50)
+  catalogId              String   @db.VarChar(50)
+  ptz                    Int?
+  rtcp                   Int?
+  status                 Boolean? @db.Bit(1)
+  startOfflinePush       Int?     @default(0)
+  administrativeDivision String   @db.VarChar(50)
+  catalogGroup           Int?     @default(1)
+  createTime             String?  @db.VarChar(50)
+  updateTime             String?  @db.VarChar(50)
+  treeType               String   @db.VarChar(50)
+}
+
+model platform_catalog {
+  id              String  @id @db.VarChar(50)
+  platformId      String  @db.VarChar(50)
+  name            String  @db.VarChar(255)
+  parentId        String? @db.VarChar(50)
+  civilCode       String? @db.VarChar(50)
+  businessGroupId String? @db.VarChar(50)
+}
+
+model platform_gb_channel {
+  id              Int    @id @default(autoincrement())
+  platformId      String @db.VarChar(50)
+  catalogId       String @db.VarChar(50)
+  deviceChannelId Int
+}
+
+model platform_gb_stream {
+  id         Int    @id @default(autoincrement())
+  platformId String @db.VarChar(50)
+  catalogId  String @db.VarChar(50)
+  gbStreamId Int
+
+  @@unique([platformId, catalogId, gbStreamId], map: "platform_gb_stream_pk")
+}
+
+model stream_proxy {
+  id                         Int      @id @default(autoincrement())
+  type                       String   @db.VarChar(50)
+  app                        String   @db.VarChar(255)
+  stream                     String   @db.VarChar(255)
+  url                        String?  @db.VarChar(255)
+  src_url                    String?  @db.VarChar(255)
+  dst_url                    String?  @db.VarChar(255)
+  timeout_ms                 Int?
+  ffmpeg_cmd_key             String?  @db.VarChar(255)
+  rtp_type                   String?  @db.VarChar(50)
+  mediaServerId              String?  @db.VarChar(50)
+  enable_audio               Boolean? @db.Bit(1)
+  enable_mp4                 Boolean? @db.Bit(1)
+  enable                     Boolean  @db.Bit(1)
+  status                     Boolean  @db.Bit(1)
+  enable_remove_none_reader  Boolean  @db.Bit(1)
+  createTime                 String   @db.VarChar(50)
+  name                       String?  @db.VarChar(255)
+  updateTime                 String?  @db.VarChar(50)
+  enable_disable_none_reader Boolean? @db.Bit(1)
+
+  @@unique([app, stream], map: "stream_proxy_pk")
+}
+
+model stream_push {
+  id               Int     @id @default(autoincrement())
+  app              String  @db.VarChar(255)
+  stream           String  @db.VarChar(255)
+  totalReaderCount String? @db.VarChar(50)
+  originType       Int?
+  originTypeStr    String? @db.VarChar(50)
+  createTime       String? @db.VarChar(50)
+  aliveSecond      Int?
+  mediaServerId    String? @db.VarChar(50)
+  serverId         String  @db.VarChar(50)
+  pushTime         String? @db.VarChar(50)
+  status           Int?
+  updateTime       String? @db.VarChar(50)
+  pushIng          Int?
+  self             Int?
+
+  @@unique([app, stream], map: "stream_push_pk")
+}
+
+model user {
+  id         Int     @id @default(autoincrement())
+  username   String  @unique(map: "user_username_uindex") @db.VarChar(255)
+  password   String  @db.VarChar(255)
+  roleId     Int
+  createTime String  @db.VarChar(50)
+  updateTime String  @db.VarChar(50)
+  pushKey    String? @db.VarChar(50)
+}
+
+model user_role {
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(50)
+  authority  String @db.VarChar(50)
+  createTime String @db.VarChar(50)
+  updateTime String @db.VarChar(50)
+}

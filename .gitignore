@@ -1,0 +1,6 @@
+.env
+mysql/
+redis/
+record/
+logs/
+*/**/node_modules
