@@ -31,7 +31,7 @@
   step 4: 执行
 
   ```shell
-    
+    git submodule init && git submodule update && \
     docker-compose build && docker-compose up -d
   ```
   
