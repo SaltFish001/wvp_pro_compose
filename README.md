@@ -2,7 +2,7 @@
 
 [wvp-GB28181-pro](https://github.com/648540858/wvp-GB28181-pro) && [ZLMediaKit](https://github.com/ZLMediaKit/ZLMediaKit) Docker-compose 部署方案
 
-## 本仓库为独立部署ZLM和WVP + 单端口模式
+## 本仓库为独立部署ZLM和WVP
 
   从该版本开始，不在使用Gitee镜像，如有需要建议自行复制源并替换相关配置
 
