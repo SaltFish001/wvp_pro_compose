@@ -118,7 +118,7 @@ media:
   # 单独配置streamIp, 方便使用域名生成播放连接
   stream-ip: ${STREAM_HOST}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
-  sdp-ip: ${SIP_IP}
+  sdp-ip: ${SDP_IP}
   # [必须修改] zlm服务器的http.port
   http-port: 80
   hook-ip: ${WVP_IP}
@@ -144,8 +144,6 @@ media:
     enable: true
     # [可选] 在此范围内选择端口用于媒体流传输, 必须提前在zlm上配置该属性，不然自动配置此属性可能不成功
     port-range: 30000,30500 # 端口范围
-    # [可选] 国标级联在此范围内选择端口发送媒体流
-    send-port-range: 30000,30500 # 端口范围
   # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
   record-assist-port: ${ASSIST_PORT}
 
@@ -195,6 +193,9 @@ user-settings:
   sip-use-source-ip-as-remote-address: false
   # 是否开启sip日志
   sip-log: true
+  # 自动数据库升级，保证表结构完整
+  # 默认开启
+  sync-db: true
 
 # 关闭在线文档（生产环境建议关闭）
 springdoc:

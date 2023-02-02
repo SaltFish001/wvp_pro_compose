@@ -31,14 +31,15 @@ services:
     volumes:
       - ./config/mysql/:/etc/mysql/conf.d
       - ${BASE_PATH}/mysql:/var/lib/mysql:rw # 挂载数据目录
-  sql-manager:
-    build:
-      context: ./buildFiles/sqlManager
-      dockerfile: Dockerfile
-    restart: always
-    environment:
-      TZ: ${TZ}
-      DATABASE_URL: ${DATABASE_URL}
+  # 由于wvp已启用db_migration, 故不在维护sql-manager 
+  # sql-manager:
+  #   build:
+  #     context: ./buildFiles/sqlManager
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   environment:
+  #     TZ: ${TZ}
+  #     DATABASE_URL: ${DATABASE_URL}
   gateway:
     build:
       context: ./buildFiles/gateway
@@ -72,6 +73,7 @@ services:
       SIP_PASSWORD: ${SIP_PASSWORD}
       WVP_IP: ${WVP_IP}
       SIP_IP: ${SIP_IP}
+      SDP_IP: ${SDP_IP}
       ZLM_IP: ${ZLM_IP}
       WVP_DB_PATH: ${WVP_DB_PATH}
       MYSQL_USERNAME: ${MYSQL_USERNAME}
@@ -92,14 +94,10 @@ services:
       - ./config/wvp:/config
       - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
     depends_on:
-      mysql:
-          condition: service_started
-      redis:
-          condition: service_started
-      zlm:
-          condition: service_started
-      sql-manager:
-        condition: service_started
+      - mysql
+      - redis
+      - zlm
+      # - sql-manager
   zlm:
     build:
       context: ./buildFiles/zlm

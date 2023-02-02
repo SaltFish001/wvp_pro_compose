@@ -39,6 +39,7 @@ CREATE TABLE `device` (
                           `updateTime` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
                           `port` int DEFAULT NULL,
                           `expires` int DEFAULT NULL,
+                          `keepaliveIntervalTime` int DEFAULT NULL,
                           `subscribeCycleForCatalog` int DEFAULT NULL,
                           `hostAddress` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
                           `charset` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -52,7 +53,6 @@ CREATE TABLE `device` (
                           `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
                           `sdpIp` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
                           `localIp` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-                          `keepaliveIntervalTime` int DEFAULT NULL,
                           PRIMARY KEY (`id`),
                           UNIQUE KEY `device_deviceId_uindex` (`deviceId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
