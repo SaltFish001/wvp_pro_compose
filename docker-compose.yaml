@@ -31,15 +31,15 @@ services:
     volumes:
       - ./config/mysql/:/etc/mysql/conf.d
       - ${BASE_PATH}/mysql:/var/lib/mysql:rw # 挂载数据目录
-  # 由于wvp已启用db_migration, 故不在维护sql-manager 
-  # sql-manager:
-  #   build:
-  #     context: ./buildFiles/sqlManager
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   environment:
-  #     TZ: ${TZ}
-  #     DATABASE_URL: ${DATABASE_URL}
+  # 由于wvp使用的flyway属实不好用，依旧使用sql-manager
+  sql-manager:
+    build:
+      context: ./buildFiles/sqlManager
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: ${TZ}
+      DATABASE_URL: ${DATABASE_URL}
   gateway:
     build:
       context: ./buildFiles/gateway
