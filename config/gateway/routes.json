@@ -27,7 +27,7 @@
     "zlm_ws": {
       "proxyType": "websocket",
       "target": "ws://zlm:80",
-      "prefix": "/rtp",
+      "prefix": "'/rtp/*([\\/\\w.])'",
       "prefixRewrite": ""
     }
   }
