@@ -41,4 +41,4 @@
 
 - 使用``docker-compose build``构建镜像时，可能会出现``zlm``构建失败。使用``docker-compose build zlm``单独构建即可
 
-- gateway下websocket暂不可用，已向fast-gateway仓库提交PR。待通过
+- ~~gateway下websocket暂不可用，已向fast-gateway仓库提交PR。待通过~~
