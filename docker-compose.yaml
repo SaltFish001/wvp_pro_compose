@@ -69,6 +69,7 @@ services:
       SIP_PASSWORD: ${SIP_PASSWORD}
       WVP_IP: ${WVP_IP}
       SIP_IP: ${SIP_IP}
+      SHOW_IP: ${SHOW_IP}
       SDP_IP: ${SDP_IP}
       ZLM_IP: ${ZLM_IP}
       WVP_DB_PATH: ${WVP_DB_PATH}
