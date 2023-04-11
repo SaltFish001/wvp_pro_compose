@@ -15,7 +15,7 @@ RUN cd /home && \
         git clone "${gitUrl}" -b wvp-28181-2.0 && \
         cd wvp-GB28181-pro &&\
         # 指定Commit, 避免数据库结构不一致
-        git checkout 166272ad11ae283e179c288ef4ae1b306ed9a589
+        git checkout e3d7be9d819e5d5fbb072103c06b4f1d0f00a5e2
 # 构建前端
 RUN cd /home/wvp-GB28181-pro/web_src && \
         npm --registry=http://registry.npm.taobao.org install && \

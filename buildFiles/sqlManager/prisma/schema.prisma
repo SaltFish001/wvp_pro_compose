@@ -38,6 +38,8 @@ model device {
   sdpIp                            String? @db.VarChar(50)
   localIp                          String? @db.VarChar(50)
   keepaliveIntervalTime            Int?
+  asMessageChannel                 Int?    @default(0)
+  mediaServerId                    String? @db.VarChar(50)
 }
 
 model device_alarm {
@@ -195,6 +197,7 @@ model parent_platform {
   createTime             String?  @db.VarChar(50)
   updateTime             String?  @db.VarChar(50)
   treeType               String   @db.VarChar(50)
+  asMessageChannel       Int?     @default(0)
 }
 
 model platform_catalog {

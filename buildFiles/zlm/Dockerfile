@@ -13,15 +13,15 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
 # 构建wvp-pro-assist, 录像助手
 RUN cd /home && \
         git clone "${assistGitUrl}" && cd wvp-pro-assist &&\
-        git checkout 7360de7ff7570acfd3af46a87b49588170b4545a
+        git checkout 04f5846d9b70ec16c3f8f1e7db493c6461bf1b5c
 
 RUN cd /home/wvp-pro-assist && \
         mvn clean package -Dmaven.test.skip=true && \
         cp /home/wvp-pro-assist/target/*.jar /opt/assist/ 
 # 构建ZLMediaKit
 RUN cd /home && \
-        git clone --depth=1 "${zlmGitUrl}" && cd ZLMediaKit && \
-        git checkout 44f4e9acd434e5549276332aa454be18844db3a8
+        git clone "${zlmGitUrl}" && cd ZLMediaKit && \
+        git checkout 24eaaf68fb40e06b22121445f69bc731efbe23b2
 
 RUN cd /home/ZLMediaKit && \
         git submodule update --init --recursive && \

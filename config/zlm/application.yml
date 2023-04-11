@@ -12,7 +12,7 @@ spring:
     # [可选] 超时时间
     timeout: 10000
 
-# [可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
+# [必选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
 server:
   port: ${ASSIST_PORT}
   # [可选] HTTPS配置， 默认不开启

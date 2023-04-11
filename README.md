@@ -12,7 +12,8 @@
 
 - sqlManager 服务是用来维护数据库变更的,如果需要自行维护数据库, 建议不使用
 - 如果需要对sqlManager做自定义开发,请参考[Prisma.io](https://prisma.io)
-- config/gateway/keys是证书放置位置,使用参考gateway说明
+~~- config/gateway/keys是证书放置位置,使用参考gateway说明~~
+- 都嫌弃我的 Gateway 不好用，我去掉了！！！！！！！！！！下个版本移除相关文件
 
 ## 如何使用
 
@@ -26,7 +27,7 @@
 
   step 3: 根据描述， 按需修改各项变量， 特别注意[config.ini](./wvp/config/config.ini) 文件的 [http].port需要手动修改，且要与``ZLM_PORT``保持一致
 
-  step 4: 根据自己需求，替换``config/gateway``下证书，修改routes.json
+  ~~step 4: 根据自己需求，替换``config/gateway``下证书，修改routes.json~~
 
   step 4: 执行
 
@@ -39,6 +40,6 @@
 
 ## 已知问题
 
-- 使用``docker-compose build``构建镜像时，可能会出现``zlm``构建失败。使用``docker-compose build zlm``单独构建即可
+~~- 使用``docker-compose build``构建镜像时，可能会出现``zlm``构建失败。使用``docker-compose build zlm``单独构建即可~~
 
 - ~~gateway下websocket暂不可用，已向fast-gateway仓库提交PR。待通过~~
