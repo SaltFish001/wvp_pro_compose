@@ -4,38 +4,38 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-    # REDIS数据库配置
-    redis:
-      # [必须修改] Redis服务器IP, REDIS安装在本机的,使用127.0.0.1
-      host: ${REDIS_HOST:127.0.0.1}
-      # [必须修改] 端口号
-      port: ${REDIS_PORT:6379}
-      # [可选] 数据库 DB
-      database: ${REDIS_DB:6}
-      # [可选] 访问密码,若你的redis服务器没有设置密码，就不需要用密码去连接
-      password: ${REDIS_PWD:}
-      # [可选] 超时时间
-      timeout: 10000
-      # [可选] 一个pool最多可分配多少个jedis实例
-      poolMaxTotal: 1000
-      # [可选] 一个pool最多有多少个状态为idle(空闲)的jedis实例
-      poolMaxIdle: 500
-      # [可选] 最大的等待时间(秒)
-      poolMaxWait: 5
-    # [必选] jdbc数据库配置
-    datasource:
-      type: com.zaxxer.hikari.HikariDataSource
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
-      username: ${MYSQL_USERNAME}
-      password: ${MYSQL_PASSWORD}
-      hikari:
-          connection-timeout: 20000             # 是客户端等待连接池连接的最大毫秒数
-          initialSize: 10                       # 连接池初始化连接数
-          maximum-pool-size: 200                # 连接池最大连接数
-          minimum-idle: 5                       # 连接池最小空闲连接数
-          idle-timeout: 300000                  # 允许连接在连接池中空闲的最长时间（以毫秒为单位）
-          max-lifetime: 1200000                 # 是池中连接关闭后的最长生命周期（以毫秒为单位)
+  # REDIS数据库配置
+  redis:
+    # [必须修改] Redis服务器IP, REDIS安装在本机的,使用127.0.0.1
+    host: ${REDIS_HOST:127.0.0.1}
+    # [必须修改] 端口号
+    port: ${REDIS_PORT:6379}
+    # [可选] 数据库 DB
+    database: ${REDIS_DB:6}
+    # [可选] 访问密码,若你的redis服务器没有设置密码，就不需要用密码去连接
+    password: ${REDIS_PWD:}
+    # [可选] 超时时间
+    timeout: 10000
+    # [可选] 一个pool最多可分配多少个jedis实例
+    poolMaxTotal: 1000
+    # [可选] 一个pool最多有多少个状态为idle(空闲)的jedis实例
+    poolMaxIdle: 500
+    # [可选] 最大的等待时间(秒)
+    poolMaxWait: 5
+  # [必选] jdbc数据库配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+        connection-timeout: 20000             # 是客户端等待连接池连接的最大毫秒数
+        initialSize: 10                       # 连接池初始化连接数
+        maximum-pool-size: 200                # 连接池最大连接数
+        minimum-idle: 5                       # 连接池最小空闲连接数
+        idle-timeout: 300000                  # 允许连接在连接池中空闲的最长时间（以毫秒为单位）
+        max-lifetime: 1200000                 # 是池中连接关闭后的最长生命周期（以毫秒为单位)
 
 
 # [可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
