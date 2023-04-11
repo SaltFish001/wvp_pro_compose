@@ -87,9 +87,9 @@ sip:
 #zlm 默认服务器配置
 media:
   # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
-  id:
+  id: ZbnQN5csqxrPix7a
   # [必须修改] zlm服务器的内网IP
-  ip: 192.168.0.100
+  ip: ${ZLM_IP}
   # [可选] 返回流地址时的ip，置空使用 media.ip
   stream-ip:  ${STREAM_HOST}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
