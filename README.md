@@ -36,7 +36,9 @@
     docker-compose build && docker-compose up -d
   ```
   
-  step 5: 遇到问题可以在WVP-PRO官方交流群找咸鱼(SaltFish)管理员
+  step 5: 遇到问题可以在[知识星球](https://t.zsxq.com/0dpu05aPO)找咸鱼(SaltFish)管理员
+  
+  <img decoding="async" src="./CopyRight.jpg" width="50%">
 
 ## 已知问题
 
