@@ -1,4 +1,0 @@
-[submodule "buildFiles/gateway"]
-	path = buildFiles/gateway
-	url = https://github.com/SaltFish001/Ts-Gateway.git
-	branch = main
