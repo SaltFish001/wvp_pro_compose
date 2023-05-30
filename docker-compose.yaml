@@ -36,26 +36,6 @@ services:
     environment:
       TZ: ${TZ}
       DATABASE_URL: ${DATABASE_URL}
-  # gateway:
-  #   build:
-  #     context: ./buildFiles/gateway
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   environment:
-  #     TZ: ${TZ}
-  #     PORT: 443
-  #     CLUSTER_NUMBER: 4
-  #     NODE_ENV: prod
-  #   ports:
-  #     - 443:443
-  #   volumes:
-  #     - ./config/gateway/keys:/project/keys
-  #     - ./config/gateway/routes.json:/project/routes.json
-  #     - ${BASE_PATH}/logs/gateway:/project/logs
-  #   depends_on:
-  #     - wvp
-  #     - zlm
-
   # 主要服务
   wvp:
     build:
@@ -85,7 +65,7 @@ services:
     ports:
       - 5060:5060
       - 5060:5060/udp
-      - 3000:80
+      - 3000:3000
     volumes:
       - ./config/wvp:/config
       - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
@@ -108,7 +88,7 @@ services:
     ports:
       - ${STREAM_PORT}:${STREAM_PORT}/udp
       - ${STREAM_PORT}:${STREAM_PORT}/tcp
-      - 80:80
+      - 3001:3001
     volumes:
       - ./config/zlm:/config
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "initDB": "prisma migrate dev",
-    "start": "npm run deploy && node index.js",
-    "deploy": "prisma migrate deploy"
+    "start": "npm run deploy",
+    "deploy": "prisma migrate deploy",
+    "pull": "prisma db pull"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +16,6 @@
     "prisma": "^4.9.0"
   },
   "dependencies": {
-    "@prisma/client": "^4.9.0",
-    "restana": "^4.9.7"
+    "@prisma/client": "^4.9.0"
   }
 }

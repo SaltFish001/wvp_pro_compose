@@ -24,8 +24,7 @@
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<!--与ThresholdFilter的区别,允许onmatch-->
-			<!--设置日志级别
-			接收info级别的日志-->
+			<!--设置日志级别 接收info级别的日志-->
 			<level>DEBUG</level>
 		</filter>
 	</appender>
@@ -48,8 +47,7 @@
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<!--与ThresholdFilter的区别,允许onmatch-->
-			<!--设置日志级别
-			接收info级别的日志-->
+			<!--设置日志级别 接收info级别的日志-->
 			<level>DEBUG</level>
 		</filter>
 	</appender>

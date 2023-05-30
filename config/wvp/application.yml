@@ -37,12 +37,20 @@ spring:
         idle-timeout: 300000                  # 允许连接在连接池中空闲的最长时间（以毫秒为单位）
         max-lifetime: 1200000                 # 是池中连接关闭后的最长生命周期（以毫秒为单位)
 
+# 修改为数据库字段下划线分隔直接对应java驼峰命名
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
+
+# 修改分页插件为 postgresql， 数据库类型为mysql不需要
+#pagehelper:
+#    helper-dialect: postgresql
 
 # [可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
 server:
-  port: 80
+  port: 3000
   # [可选] HTTPS配置， 默认不开启
-  # 不启用自带的SSL
+  # 不启用自带的SSL, 建议使用反向代理
   ssl:
     # [可选] 是否开启HTTPS访问
     enabled: false
@@ -60,7 +68,10 @@ server:
 
 # 作为28181服务器的配置
 sip:
-  # [必须修改] 本机的IP
+  # [必须修改] 本机的IP，对应你的网卡，监听什么ip就是使用什么网卡，
+    # 如果要监听多张网卡，可以使用逗号分隔多个IP， 例如： 192.168.1.4,10.0.0.4
+    # 如果不明白，就使用0.0.0.0，大部分情况都是可以的
+    # 请不要使用127.0.0.1，任何包括localhost在内的域名都是不可以的。
   ip: ${SIP_IP}
   # [可选] 没有任何业务需求，仅仅是在前端展示的时候用
   show-ip: ${SHOW_IP:SIP_IP}
@@ -84,6 +95,15 @@ sip:
   # 是否存储alarm信息
   alarm: false
 
+# 做为JT1078服务器的配置
+jt1078:
+    #[必须修改] 是否开启1078的服务
+    enable: true
+    #[必修修改] 1708设备接入的端口
+    port: ${JT1078_PORT}
+    #[可选] 设备鉴权的密码
+    password: ${JT1078_PASS}
+
 #zlm 默认服务器配置
 media:
   # [必须修改] zlm服务器唯一id，用于触发hook时区别是哪台服务器,general.mediaServerId
@@ -97,7 +117,7 @@ media:
   # [可选] zlm服务器的hook所使用的IP, 默认使用sip.ip
   hook-ip: ${WVP_IP}
   # [必须修改] zlm服务器的http.port
-  http-port: 80
+  http-port: 3001
   # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
   http-ssl-port:
   # [可选] zlm服务器的rtmp.port, 置空使用zlm配置文件配置
@@ -137,15 +157,15 @@ user-settings:
   senior-sdp: false
   # 保存移动位置历史轨迹：true:保留历史数据，false:仅保留最后的位置(默认)
   save-position-history: false
-  # 点播等待超时时间,单位：毫秒
-  play-timeout: 3000
+  # 点播/录像回放 等待超时时间,单位：毫秒
+  play-timeout: 18000
   # 上级点播等待超时时间,单位：毫秒
   platform-play-timeout: 60000
   # 是否开启接口鉴权
   interface-authentication: true
   # 接口鉴权例外的接口, 即不进行接口鉴权的接口,尽量详细书写，尽量不用/**，至少两级目录
   interface-authentication-excludes:
-    - /api/v1/**
+      - /api/v1/**
   # 推流直播是否录制
   record-push-live: false
   # 国标是否录制
@@ -155,7 +175,7 @@ user-settings:
   # 使用推流状态作为推流通道状态
   use-pushing-as-status: true
   # 使用来源请求ip作为streamIp,当且仅当你只有zlm节点它与wvp在一起的情况下开启
-  use-source-ip-as-stream-ip: false
+  use-source-ip-as-stream-ip: true
   # 国标点播 按需拉流, true：有人观看拉流，无人观看释放， false：拉起后不自动释放
   stream-on-demand: true
   # 推流鉴权， 默认开启
@@ -164,15 +184,23 @@ user-settings:
   # 非严格模式使用随机端口发流，性能更好， 默认关闭
   gb-send-stream-strict: false
   # 设备上线时是否自动同步通道
-  sync-channel-on-device-online: false
+  sync-channel-on-device-online: true
   # 是否使用设备来源Ip作为回复IP， 不设置则为 false
   sip-use-source-ip-as-remote-address: false
   # 是否开启sip日志
   sip-log: true
+  # 是否开启sql日志
+  sql-log: true
   # 消息通道功能-缺少国标ID是否给所有上级发送消息
   send-to-platforms-when-id-lost: true
   # 保持通道状态，不接受notify通道状态变化， 兼容海康平台发送错误消息
   refuse-channel-status-channel-form-notify: false
+  # 设置notify缓存队列最大长度，超过此长度的数据将返回486 BUSY_HERE，消息丢弃, 默认10000
+  max-notify-count-queue: 10000
+  # 设备/通道状态变化时发送消息
+  device-status-notify: true
+  # 上级平台点播时不使用上级平台指定的ssrc，使用自定义的ssrc，参考国标文档-点播外域设备媒体流SSRC处理方式
+  use-custom-ssrc-for-parent-invite: true
   # 跨域配置，配置你访问前端页面的地址即可， 可以配置多个
   allowed-origins:
       - http://localhost:3000

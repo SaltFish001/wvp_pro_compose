@@ -16,4 +16,5 @@ RUN npm install
 EXPOSE 80
 # 启动命令
 # 增加对sourceMap的支持,更好的查看错误堆栈
+
 CMD ["npm", "run", "start"]
