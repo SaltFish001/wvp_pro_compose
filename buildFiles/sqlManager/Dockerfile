@@ -7,7 +7,7 @@ COPY . /project
 WORKDIR /project/
 
 # 安装依赖
-RUN npm install
+RUN yarn install
 
 # # 执行Prisma migrate deploy, 必须要 --DATABASE_URL-- 环境变量!
 # RUN npm run deploy
@@ -17,4 +17,4 @@ EXPOSE 80
 # 启动命令
 # 增加对sourceMap的支持,更好的查看错误堆栈
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "deploy"]

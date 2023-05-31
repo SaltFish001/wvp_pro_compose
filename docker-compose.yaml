@@ -45,12 +45,12 @@ services:
     build:
       context: ./buildFiles/sqlManager
       dockerfile: Dockerfile
-    restart: always
+    restart: on-failure
     environment:
       TZ: ${TZ}
       DATABASE_URL: ${DATABASE_URL}
     depends_on:
-      wvp-mysql:
+      mysql:
         condition: service_healthy
 
   # 主要服务
@@ -90,16 +90,20 @@ services:
     volumes:
       - ./config/wvp:/config
       - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
+    healthcheck:
+      start_period: 15s
+      test: [ "CMD", "curl", "-sS", "http://localhost:3000" ]
+      timeout: 10s
+      retries: 10
     depends_on:
       zlm:
         condition: service_healthy
-      wvp-mysql:
+      mysql:
         condition: service_healthy
-      wvp-redis:
+      redis:
         condition: service_healthy
       sql-manager:
         condition: service_completed_successfully
-        
   zlm:
     build:
       context: ./buildFiles/zlm
@@ -120,6 +124,11 @@ services:
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录
       - ${BASE_PATH}/logs/assist:/opt/assist/logs # 保存assist日志
       - ${BASE_PATH}/logs/media:/opt/media/log # 保存zlm日志
+    healthcheck:
+      start_period: 30s
+      test: [ "CMD", "curl", "-sS", "http://localhost:3001" ]
+      timeout: 10s
+      retries: 10
     depends_on:
       redis: 
         condition: service_healthy

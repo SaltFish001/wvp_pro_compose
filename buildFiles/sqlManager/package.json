@@ -11,10 +11,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "prisma": "^4.9.0"
-  },
   "dependencies": {
+    "prisma": "^4.9.0",
     "@prisma/client": "^4.9.0"
   }
 }
