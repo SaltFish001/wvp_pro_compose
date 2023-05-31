@@ -13,7 +13,14 @@ services:
     volumes:
       - ${REDIS_DATA}:/data
       - ${REDIS_LOG}:/logs
+    healthcheck:
+      start_period: 5s
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     command: redis-server --port 6379 --requirepass ${REDIS_PASSWORD}  --appendonly yes
+
   mysql:
     image: mysql:8 # 指定镜像和版本
     restart: always # 指定开机重启
@@ -27,6 +34,12 @@ services:
     volumes:
       - ./config/mysql/:/etc/mysql/conf.d
       - ${BASE_PATH}/mysql:/var/lib/mysql:rw # 挂载数据目录
+    healthcheck:
+      start_period: 15s
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
   # 由于wvp使用的flyway属实不好用，依旧使用sql-manager
   sql-manager:
     build:
@@ -36,6 +49,10 @@ services:
     environment:
       TZ: ${TZ}
       DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      wvp-mysql:
+        condition: service_healthy
+
   # 主要服务
   wvp:
     build:
@@ -62,18 +79,27 @@ services:
       STREAM_HOST: ${STREAM_HOST}
       DRUID_USER: ${DRUID_USER}
       DRUID_PASS: ${DRUID_PASS}
+      JT1078_PORT: ${JT1078_PORT}
+      JT1078_PASS: ${JT1078_PASS}
     ports:
       - 5060:5060
       - 5060:5060/udp
+      - ${JT1078_PORT}:${JT1078_PORT}
+      - ${JT1078_PORT}:${JT1078_PORT}/udp
       - 3000:3000
     volumes:
       - ./config/wvp:/config
       - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
     depends_on:
-      - mysql
-      - redis
-      - zlm
-      # - sql-manager
+      zlm:
+        condition: service_healthy
+      wvp-mysql:
+        condition: service_healthy
+      wvp-redis:
+        condition: service_healthy
+      sql-manager:
+        condition: service_completed_successfully
+        
   zlm:
     build:
       context: ./buildFiles/zlm
@@ -95,4 +121,6 @@ services:
       - ${BASE_PATH}/logs/assist:/opt/assist/logs # 保存assist日志
       - ${BASE_PATH}/logs/media:/opt/media/log # 保存zlm日志
     depends_on:
-      - redis
+      redis: 
+        condition: service_healthy
+

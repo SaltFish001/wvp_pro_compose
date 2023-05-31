@@ -10,6 +10,9 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
         apt-get install -y --no-install-recommends openjdk-11-jre git libssl-dev libsdl-dev libavcodec-dev libavutil-dev ffmpeg maven build-essential \
         cmake ca-certificates openssl ffmpeg &&\
         mkdir -p /opt/assist/config /opt/assist/heapdump /opt/media/www/record
+
+COPY settings.xml /usr/share/maven/conf/
+
 # 构建wvp-pro-assist, 录像助手
 RUN cd /home && \
         git clone "${assistGitUrl}" && cd wvp-pro-assist &&\

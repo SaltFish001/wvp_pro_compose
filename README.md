@@ -13,7 +13,8 @@
 - sqlManager 服务是用来维护数据库变更的,如果需要自行维护数据库, 建议不使用
 - 如果需要对sqlManager做自定义开发,请参考[Prisma.io](https://prisma.io)
 ~~- config/gateway/keys是证书放置位置,使用参考gateway说明~~
-- 都嫌弃我的 Gateway 不好用，我去掉了！！！！！！！！！！下个版本移除相关文件
+~~- 都嫌弃我的 Gateway 不好用，我去掉了！！！！！！！！！！下个版本移除相关文件~~
+- `注意，本次变更较大，尤其是数据库，建议仔细阅读`
 
 ## 如何使用
 
@@ -25,8 +26,7 @@
 
   step 2: 必须修改 ``STREAM_HOST`` 变量
 
-  step 3: 根据描述， 按需修改各项变量， 特别注意[config.ini](./wvp/config/config.ini) 文件的 [http].port需要手动修改，且要与``ZLM_PORT``保持一致
-
+  step 3: 根据描述， 按需修改各项变量， 特别注意如要修改 zlm 端口 [application.yml](./config/wvp/application.yml) 的 `media.http-port`& [config.ini](./config/zlm/config.ini) 文件的 `[http].port` 需要手动修改
   ~~step 4: 根据自己需求，替换``config/gateway``下证书，修改routes.json~~
 
   step 4: 执行
