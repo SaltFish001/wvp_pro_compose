@@ -6,8 +6,7 @@
 	<property name="LOG_HOME" value="logs" />
 
 	<substitutionProperty name="log.pattern"
-		value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(---){faint} %clr(%-1.30logger{0}){cyan} %clr(:){faint} %m%n%wEx" />
-
+		value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([%thread]) %clr(%5p) %clr(---){faint} %clr(%logger{50}){cyan}%clr(:) %clr(%L){cyan} %m%n%wEx" />
 	<conversionRule conversionWord="clr"
 		converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex"
@@ -24,7 +23,8 @@
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<!--与ThresholdFilter的区别,允许onmatch-->
-			<!--设置日志级别 接收info级别的日志-->
+			<!--设置日志级别
+			接收info级别的日志-->
 			<level>DEBUG</level>
 		</filter>
 	</appender>
@@ -47,7 +47,8 @@
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<!--与ThresholdFilter的区别,允许onmatch-->
-			<!--设置日志级别 接收info级别的日志-->
+			<!--设置日志级别
+			接收info级别的日志-->
 			<level>DEBUG</level>
 		</filter>
 	</appender>

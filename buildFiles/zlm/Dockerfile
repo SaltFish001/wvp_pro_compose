@@ -8,7 +8,18 @@ COPY sources.list /etc/apt/sources.list
 RUN export DEBIAN_FRONTEND=noninteractive &&\
         apt-get update && \
         apt-get install -y --no-install-recommends openjdk-11-jre git libssl-dev libsdl-dev libavcodec-dev libavutil-dev ffmpeg maven build-essential \
-        cmake ca-certificates openssl ffmpeg &&\
+        cmake ca-certificates openssl ffmpeg \
+        curl \
+        vim \
+        tzdata \
+        libssl-dev \
+        libmysqlclient-dev \
+        libx264-dev \
+        libfaac-dev \
+        libmp4v2-dev \
+        apt-get autoremove -y && \
+        apt-get clean -y && \
+        rm -rf /var/lib/apt/lists/* && \
         mkdir -p /opt/assist/config /opt/assist/heapdump /opt/media/www/record
 
 COPY settings.xml /usr/share/maven/conf/
@@ -16,7 +27,7 @@ COPY settings.xml /usr/share/maven/conf/
 # 构建wvp-pro-assist, 录像助手
 RUN cd /home && \
         git clone "${assistGitUrl}" && cd wvp-pro-assist &&\
-        git checkout 8679ad210daff07d1073d04e8ad129d3f17b6a5a
+        git checkout 6a8b3ffb005547ad59afe22af15e0008e3fdf58c
 
 RUN cd /home/wvp-pro-assist && \
         mvn clean package -Dmaven.test.skip=true && \
@@ -24,8 +35,8 @@ RUN cd /home/wvp-pro-assist && \
 # 构建ZLMediaKit
 RUN cd /home && \
         git clone "${zlmGitUrl}" && cd ZLMediaKit && \
-        git checkout 0232caf068d82e7175c52c2eeaf67dbcf0b7f68f
-        
+        git checkout 861be27ef89e0fac562324a7765f136d983131a6
+
 RUN cd /home/ZLMediaKit && \
         git submodule update --init --recursive && \
         mkdir -p build release/linux/Release/ &&\

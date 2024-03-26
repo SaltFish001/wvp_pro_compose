@@ -33,6 +33,7 @@ services:
       SQL_MODE: "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
     volumes:
       - ./config/mysql/:/etc/mysql/conf.d
+      - ./config/initSql/:/docker-entrypoint-initdb.d/
       - ${BASE_PATH}/mysql:/var/lib/mysql:rw # 挂载数据目录
     healthcheck:
       start_period: 15s
@@ -40,18 +41,18 @@ services:
       timeout: 20s
       retries: 10
 
-  # 由于wvp使用的flyway属实不好用，依旧使用sql-manager
-  sql-manager:
-    build:
-      context: ./buildFiles/sqlManager
-      dockerfile: Dockerfile
-    restart: on-failure
-    environment:
-      TZ: ${TZ}
-      DATABASE_URL: ${DATABASE_URL}
-    depends_on:
-      mysql:
-        condition: service_healthy
+  # 实在不想维护数据库
+  # sql-manager:
+  #   build:
+  #     context: ./buildFiles/sqlManager
+  #     dockerfile: Dockerfile
+  #   restart: on-failure
+  #   environment:
+  #     TZ: ${TZ}
+  #     DATABASE_URL: ${DATABASE_URL}
+  #   depends_on:
+  #     mysql:
+  #       condition: service_healthy
 
   # 主要服务
   wvp:
@@ -102,8 +103,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      sql-manager:
-        condition: service_completed_successfully
+      # sql-manager:
+      #   condition: service_completed_successfully
   zlm:
     build:
       context: ./buildFiles/zlm

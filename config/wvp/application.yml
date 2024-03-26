@@ -1,4 +1,10 @@
+# 此配置文件只是用作展示所有配置项， 不可直接使用
+
 spring:
+  # 设置接口超时时间
+  mvc:
+    async:
+      request-timeout: 20000
   # [可选]上传文件大小限制
   servlet:
     multipart:
@@ -24,23 +30,41 @@ spring:
     poolMaxWait: 5
   # [必选] jdbc数据库配置
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-    hikari:
-        connection-timeout: 20000             # 是客户端等待连接池连接的最大毫秒数
-        initialSize: 10                       # 连接池初始化连接数
-        maximum-pool-size: 200                # 连接池最大连接数
-        minimum-idle: 5                       # 连接池最小空闲连接数
-        idle-timeout: 300000                  # 允许连接在连接池中空闲的最长时间（以毫秒为单位）
-        max-lifetime: 1200000                 # 是池中连接关闭后的最长生命周期（以毫秒为单位)
-
-# 修改为数据库字段下划线分隔直接对应java驼峰命名
-mybatis:
-    configuration:
-        map-underscore-to-camel-case: true
+    # kingbase配置
+    #        type: com.zaxxer.hikari.HikariDataSource
+    #        driver-class-name: com.kingbase8.Driver
+    #        url: jdbc:kingbase8://192.168.1.55:54321/wvp?useUnicode=true&characterEncoding=utf8
+    #        username: system
+    #        password: system
+    # postgresql配置
+    #    type: com.zaxxer.hikari.HikariDataSource
+    #    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:postgresql://192.168.1.242:3306/242wvp
+    #    username: root
+    #    password: SYceshizu1234
+    # mysql配置
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
+          username: ${MYSQL_USERNAME}
+          password: ${MYSQL_PASSWORD}
+          hikari:
+            connection-timeout: 20000 # 是客户端等待连接池连接的最大毫秒数
+            initialSize: 50 # 连接池初始化连接数
+            maximum-pool-size: 200 # 连接池最大连接数
+            minimum-idle: 10 # 连接池最小空闲连接数
+            idle-timeout: 300000 # 允许连接在连接池中空闲的最长时间（以毫秒为单位）
+            max-lifetime: 1200000 # 是池中连接关闭后的最长生命周期（以毫秒为单位)
+        share:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/wvp269_1?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+          username: root
+          password: 12345678
 
 # 修改分页插件为 postgresql， 数据库类型为mysql不需要
 #pagehelper:
@@ -69,9 +93,9 @@ server:
 # 作为28181服务器的配置
 sip:
   # [必须修改] 本机的IP，对应你的网卡，监听什么ip就是使用什么网卡，
-    # 如果要监听多张网卡，可以使用逗号分隔多个IP， 例如： 192.168.1.4,10.0.0.4
-    # 如果不明白，就使用0.0.0.0，大部分情况都是可以的
-    # 请不要使用127.0.0.1，任何包括localhost在内的域名都是不可以的。
+  # 如果要监听多张网卡，可以使用逗号分隔多个IP， 例如： 192.168.1.4,10.0.0.4
+  # 如果不明白，就使用0.0.0.0，大部分情况都是可以的
+  # 请不要使用127.0.0.1，任何包括localhost在内的域名都是不可以的。
   ip: ${SIP_IP}
   # [可选] 没有任何业务需求，仅仅是在前端展示的时候用
   show-ip: ${SHOW_IP:SIP_IP}
@@ -97,12 +121,12 @@ sip:
 
 # 做为JT1078服务器的配置
 jt1078:
-    #[必须修改] 是否开启1078的服务
-    enable: true
-    #[必修修改] 1708设备接入的端口
-    port: ${JT1078_PORT}
-    #[可选] 设备鉴权的密码
-    password: ${JT1078_PASS}
+  #[必须修改] 是否开启1078的服务
+  enable: true
+  #[必修修改] 1708设备接入的端口
+  port: ${JT1078_PORT}
+  #[可选] 设备鉴权的密码
+  password: ${JT1078_PASS}
 
 #zlm 默认服务器配置
 media:
@@ -111,7 +135,7 @@ media:
   # [必须修改] zlm服务器的内网IP
   ip: ${ZLM_IP}
   # [可选] 返回流地址时的ip，置空使用 media.ip
-  stream-ip:  ${STREAM_HOST}
+  stream-ip: ${STREAM_HOST}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
   sdp-ip: ${SDP_IP}
   # [可选] zlm服务器的hook所使用的IP, 默认使用sip.ip
@@ -134,18 +158,24 @@ media:
   auto-config: true
   # [可选] zlm服务器的hook.admin_params=secret
   secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
+  # 录像路径
+  record-path: ./www/record
+  # 录像保存时长
+  record-day: 7
   # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
   rtp:
-      # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
-      enable: true
-      # [可选] 在此范围内选择端口用于媒体流传输, 必须提前在zlm上配置该属性，不然自动配置此属性可能不成功
-      port-range: 30000,30500 # 端口范围
+    # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
+    enable: true
+    # [可选] 在此范围内选择端口用于媒体流传输, 必须提前在zlm上配置该属性，不然自动配置此属性可能不成功
+    port-range: 30000,30500 # 端口范围
+    # [可选] 国标级联在此范围内选择端口发送媒体流，请不要与收流端口范围重合
+    send-port-range: 50502,50506 # 端口范围
   # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
   record-assist-port: ${ASSIST_PORT}
 
-# [可选] 日志配置, 一般不需要改
+# [可选] 日志配置, 如果不需要在jar外修改日志内容那么可以不配置此项
 logging:
-  config: classpath:logback-spring-local.xml
+  config: classpath:logback-spring.xml
 
 # [根据业务需求配置]
 user-settings:
@@ -165,13 +195,13 @@ user-settings:
   interface-authentication: true
   # 接口鉴权例外的接口, 即不进行接口鉴权的接口,尽量详细书写，尽量不用/**，至少两级目录
   interface-authentication-excludes:
-      - /api/v1/**
+    - /api/v1/**
   # 推流直播是否录制
   record-push-live: false
   # 国标是否录制
   record-sip: false
   # 是否将日志存储进数据库
-  logInDatebase: true
+  logInDatabase: true
   # 使用推流状态作为推流通道状态
   use-pushing-as-status: true
   # 使用来源请求ip作为streamIp,当且仅当你只有zlm节点它与wvp在一起的情况下开启
@@ -180,17 +210,18 @@ user-settings:
   stream-on-demand: true
   # 推流鉴权， 默认开启
   push-authority: true
-  # 国标级联发流严格模式，严格模式会使用与sdp信息中一致的端口发流，端口共享media.rtp.port-range，这会损失一些性能，
-  # 非严格模式使用随机端口发流，性能更好， 默认关闭
-  gb-send-stream-strict: false
   # 设备上线时是否自动同步通道
-  sync-channel-on-device-online: true
+  sync-channel-on-device-online: false
+  # 国标级联语音喊话发流模式 * UDP:udp传输 TCP-ACTIVE：tcp主动模式 TCP-PASSIVE：tcp被动模式
+  broadcast-for-platform: UDP
   # 是否使用设备来源Ip作为回复IP， 不设置则为 false
   sip-use-source-ip-as-remote-address: false
   # 是否开启sip日志
   sip-log: true
   # 是否开启sql日志
   sql-log: true
+  # 收到ack消息后开始发流，默认false， 回复200ok后直接开始发流
+  push-stream-after-ack: false
   # 消息通道功能-缺少国标ID是否给所有上级发送消息
   send-to-platforms-when-id-lost: true
   # 保持通道状态，不接受notify通道状态变化， 兼容海康平台发送错误消息
@@ -201,9 +232,14 @@ user-settings:
   device-status-notify: true
   # 上级平台点播时不使用上级平台指定的ssrc，使用自定义的ssrc，参考国标文档-点播外域设备媒体流SSRC处理方式
   use-custom-ssrc-for-parent-invite: true
-  # 跨域配置，配置你访问前端页面的地址即可， 可以配置多个
-  allowed-origins:
-      - http://localhost:3000
+  # 国标级联离线后多久重试一次注册
+  register-again-after-time: 60
+  # 国标续订方式，true为续订，每次注册在同一个会话里，false为重新注册，每次使用新的会话
+  register-keep-int-dialog: false
+  # 跨域配置，不配置此项则允许所有跨域请求，配置后则只允许配置的页面的地址请求， 可以配置多个
+  # allowed-origins:
+  #   - http://localhost:8008
+  #   - http://192.168.1.3:8008
 
 # 关闭在线文档（生产环境建议关闭）
 springdoc:
