@@ -24,6 +24,8 @@ RUN apt-get update && \
         g++ \
         libavcodec-dev libavutil-dev libswscale-dev libresample-dev \
         libsdl-dev libusrsctp-dev \
+        openjdk-11-jre \
+        maven \
         gdb && \
         apt-get autoremove -y && \
         apt-get clean -y && \
@@ -73,6 +75,7 @@ RUN apt-get update && \
         libfaac-dev \
         ffmpeg \
         gcc \
+        openjdk-11-jre \
         g++ \
         libavcodec-dev libavutil-dev libswscale-dev libresample-dev \
         libsdl-dev libusrsctp-dev \
