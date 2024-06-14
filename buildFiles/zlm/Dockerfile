@@ -5,18 +5,26 @@ ARG zlmGitUrl="https://github.com/ZLMediaKit/ZLMediaKit.git"
 
 COPY sources.list /etc/apt/sources.list
 
-RUN export DEBIAN_FRONTEND=noninteractive &&\
-        apt-get update && \
-        apt-get install -y --no-install-recommends openjdk-11-jre git libssl-dev libsdl-dev libavcodec-dev libavutil-dev ffmpeg maven build-essential \
-        cmake ca-certificates openssl ffmpeg \
+RUN apt-get update && \
+        DEBIAN_FRONTEND="noninteractive" \
+        apt-get install -y --no-install-recommends \
+        build-essential \
+        cmake \
+        git \
         curl \
         vim \
+        wget \
+        ca-certificates \
         tzdata \
         libssl-dev \
         libmysqlclient-dev \
         libx264-dev \
         libfaac-dev \
-        libmp4v2-dev \
+        gcc \
+        g++ \
+        libavcodec-dev libavutil-dev libswscale-dev libresample-dev \
+        libsdl-dev libusrsctp-dev \
+        gdb && \
         apt-get autoremove -y && \
         apt-get clean -y && \
         rm -rf /var/lib/apt/lists/* && \
@@ -52,14 +60,26 @@ FROM ubuntu:20.04
 ENV LC_ALL zh_CN.UTF-8
 
 COPY sources.list /etc/apt/sources.list
-
-RUN export DEBIAN_FRONTEND=noninteractive &&\
-        apt-get update && \
-        apt-get install -y --fix-missing --no-install-recommends openjdk-11-jre ca-certificates openssl curl ffmpeg language-pack-zh-hans && \
+RUN apt-get update && \
+        DEBIAN_FRONTEND="noninteractive" \
+        apt-get install -y --no-install-recommends \
+        vim \
+        wget \
+        ca-certificates \
+        tzdata \
+        curl \
+        libssl-dev \
+        libx264-dev \
+        libfaac-dev \
+        ffmpeg \
+        gcc \
+        g++ \
+        libavcodec-dev libavutil-dev libswscale-dev libresample-dev \
+        libsdl-dev libusrsctp-dev \
+        gdb && \
         apt-get autoremove -y && \
         apt-get clean -y && \
-        rm -rf /var/lib/apt/lists/*dic
-
+        rm -rf /var/lib/apt/lists/*
 COPY --from=build /opt /opt
 WORKDIR /config
 CMD ["sh", "run-zlm.sh"]
