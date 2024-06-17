@@ -41,19 +41,6 @@ services:
       timeout: 20s
       retries: 10
 
-  # 实在不想维护数据库
-  # sql-manager:
-  #   build:
-  #     context: ./buildFiles/sqlManager
-  #     dockerfile: Dockerfile
-  #   restart: on-failure
-  #   environment:
-  #     TZ: ${TZ}
-  #     DATABASE_URL: ${DATABASE_URL}
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-
   # 主要服务
   wvp:
     build:
@@ -98,39 +85,26 @@ services:
       retries: 10
     depends_on:
       zlm:
-        condition: service_healthy
+        condition: service_started
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
-      # sql-manager:
-      #   condition: service_completed_successfully
   zlm:
-    build:
-      context: ./buildFiles/zlm
-      dockerfile: Dockerfile
+    image: zlmediakit/zlmediakit:master
     restart: always
     environment:
       TZ: ${TZ}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PWD: ${REDIS_PASSWORD}
-      ASSIST_PORT: ${ASSIST_PORT}
     ports:
       - ${STREAM_PORT}:${STREAM_PORT}/udp
       - ${STREAM_PORT}:${STREAM_PORT}/tcp
       - 3001:3001
     volumes:
-      - ./config/zlm:/config
+      - ./config/zlm/config.ini:/opt/media/conf/config.ini
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录
-      - ${BASE_PATH}/logs/assist:/opt/assist/logs # 保存assist日志
       - ${BASE_PATH}/logs/media:/opt/media/log # 保存zlm日志
     healthcheck:
       start_period: 30s
       test: [ "CMD", "curl", "-sS", "http://localhost:3001" ]
       timeout: 10s
       retries: 10
-    depends_on:
-      redis: 
-        condition: service_healthy
-
