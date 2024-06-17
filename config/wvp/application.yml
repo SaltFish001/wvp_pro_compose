@@ -171,8 +171,7 @@ media:
     # [可选] 国标级联在此范围内选择端口发送媒体流，请不要与收流端口范围重合
     send-port-range: 50502,50506 # 端口范围
   # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
-  record-assist-port: ${ASSIST_PORT}
-
+  record-assist-port: 0
 # [可选] 日志配置, 如果不需要在jar外修改日志内容那么可以不配置此项
 logging:
   config: classpath:logback-spring.xml

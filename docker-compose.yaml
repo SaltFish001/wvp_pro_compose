@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   # 基础服务，可根据情况替换成第三方
   redis:
@@ -63,7 +61,6 @@ services:
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PWD: ${REDIS_PASSWORD}
-      ASSIST_PORT: ${ASSIST_PORT}
       STREAM_HOST: ${STREAM_HOST}
       DRUID_USER: ${DRUID_USER}
       DRUID_PASS: ${DRUID_PASS}
