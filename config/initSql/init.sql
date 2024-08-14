@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS wvp_pro;
+
+USE wvp_pro;
+
 /*建表*/
 create table wvp_device (
                             id serial primary key ,
