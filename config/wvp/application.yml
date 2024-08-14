@@ -157,7 +157,7 @@ media:
   # [可选] 是否自动配置ZLM, 如果希望手动配置ZLM, 可以设为false, 不建议新接触的用户修改
   auto-config: true
   # [可选] zlm服务器的hook.admin_params=secret
-  secret: 035c73f7-bb6b-4889-a715-d9eb2d1925cc
+  secret: 034523TF8yT83wh5Wvz73f7
   # 录像路径
   record-path: ./www/record
   # 录像保存时长
