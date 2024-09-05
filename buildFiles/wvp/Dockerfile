@@ -27,8 +27,7 @@ RUN cd /home/wvp-GB28181-pro/web_src && \
 RUN cd /home/wvp-GB28181-pro && \
         mvn clean package -Dmaven.test.skip=true && \
         cp /home/wvp-GB28181-pro/target/*.jar /opt/wvp/ && \
-        cp -r /home/wvp-GB28181-pro/src/main/resources/banner.txt /opt/wvp/config/banner.txt && \
-        cp -r /home/wvp-GB28181-pro/src/main/resources/wvpssl.jks /opt/wvp/config/wvpssl.jks
+        cp -r /home/wvp-GB28181-pro/src/main/resources/ /opt/wvp/config/ 
 
 
 FROM ubuntu:20.04
