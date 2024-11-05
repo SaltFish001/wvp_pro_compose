@@ -35,19 +35,9 @@ RUN cd /home/wvp-GB28181-pro && \
         cp -r /home/wvp-GB28181-pro/src/main/resources/ /opt/wvp/config/ 
 
 
-FROM ubuntu:20.04
+FROM openjdk:11-jre-slim-buster AS runner
 
 ENV LC_ALL zh_CN.UTF-8
-
-COPY sources.list /etc/apt/sources.list
-
-RUN export DEBIAN_FRONTEND=noninteractive &&\
-        apt-get update && \
-        # 安装必须依赖
-        apt-get install -y --fix-missing --no-install-recommends openjdk-11-jre curl ca-certificates language-pack-zh-hans && \
-        apt-get autoremove -y && \
-        apt-get clean -y && \
-        rm -rf /var/lib/apt/lists/*dic
 
 COPY --from=build /opt /opt
 
