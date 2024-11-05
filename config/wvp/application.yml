@@ -49,7 +49,7 @@ spring:
         master:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true
+          url: jdbc:mysql://${WVP_DB_PATH}?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
           username: ${MYSQL_USERNAME}
           password: ${MYSQL_PASSWORD}
           hikari:
@@ -96,7 +96,7 @@ sip:
   # 如果要监听多张网卡，可以使用逗号分隔多个IP， 例如： 192.168.1.4,10.0.0.4
   # 如果不明白，就使用0.0.0.0，大部分情况都是可以的
   # 请不要使用127.0.0.1，任何包括localhost在内的域名都是不可以的。
-  ip: ${SIP_IP}
+  ip: 0.0.0.0
   # [可选] 没有任何业务需求，仅仅是在前端展示的时候用
   show-ip: ${SHOW_IP:SIP_IP}
   # [可选] 28181服务监听的端口
@@ -118,6 +118,8 @@ sip:
   # keepalliveToOnline: false
   # 是否存储alarm信息
   alarm: false
+  # 命令发送等待回复的超时时间, 单位:秒
+  timeout: 15
 
 # 做为JT1078服务器的配置
 jt1078:
@@ -134,6 +136,8 @@ media:
   id: ZbnQN5csqxrPix7a
   # [必须修改] zlm服务器的内网IP
   ip: ${ZLM_IP}
+  # [可选] 有公网IP就配置公网IP, 不可用域名
+  wan_ip:
   # [可选] 返回流地址时的ip，置空使用 media.ip
   stream-ip: ${STREAM_HOST}
   # [可选] wvp在国标信令中使用的ip，此ip为摄像机可以访问到的ip， 置空使用 media.ip
@@ -172,13 +176,14 @@ media:
     send-port-range: 50502,50506 # 端口范围
   # 录像辅助服务， 部署此服务可以实现zlm录像的管理与下载， 0 表示不使用
   record-assist-port: 0
+
 # [可选] 日志配置, 如果不需要在jar外修改日志内容那么可以不配置此项
 logging:
   config: classpath:logback-spring.xml
 
 # [根据业务需求配置]
 user-settings:
-  # [可选] 服务ID，不写则为000000
+  # 服务ID，不写则为000000
   server-id:
   # [可选] 自动点播， 使用固定流地址进行播放时，如果未点播则自动进行点播, 需要rtp.enable=true
   auto-apply-play: false
@@ -219,8 +224,6 @@ user-settings:
   sip-log: true
   # 是否开启sql日志
   sql-log: true
-  # 收到ack消息后开始发流，默认false， 回复200ok后直接开始发流
-  push-stream-after-ack: false
   # 消息通道功能-缺少国标ID是否给所有上级发送消息
   send-to-platforms-when-id-lost: true
   # 保持通道状态，不接受notify通道状态变化， 兼容海康平台发送错误消息
@@ -228,17 +231,23 @@ user-settings:
   # 设置notify缓存队列最大长度，超过此长度的数据将返回486 BUSY_HERE，消息丢弃, 默认10000
   max-notify-count-queue: 10000
   # 设备/通道状态变化时发送消息
-  device-status-notify: true
+  device-status-notify: false
   # 上级平台点播时不使用上级平台指定的ssrc，使用自定义的ssrc，参考国标文档-点播外域设备媒体流SSRC处理方式
   use-custom-ssrc-for-parent-invite: true
   # 国标级联离线后多久重试一次注册
   register-again-after-time: 60
   # 国标续订方式，true为续订，每次注册在同一个会话里，false为重新注册，每次使用新的会话
   register-keep-int-dialog: false
+  # 开启接口文档页面。 默认开启，生产环境建议关闭，遇到swagger相关的漏洞时也可以关闭
+  doc-enable: true
   # 跨域配置，不配置此项则允许所有跨域请求，配置后则只允许配置的页面的地址请求， 可以配置多个
-  # allowed-origins:
-  #   - http://localhost:8008
-  #   - http://192.168.1.3:8008
+  allowed-origins:
+    - http://localhost:8008
+    - http://192.168.1.3:8008
+  # 国标设备离线后的上线策略，
+  # 0： 国标标准实现，设备离线后不回复心跳，直到设备重新注册上线，
+  # 1（默认）： 对于离线设备，收到心跳就把设备设置为上线，并更新注册时间为上次这次心跳的时间。防止过期时间判断异常
+  gb-device-online: 0
 
 # 关闭在线文档（生产环境建议关闭）
 springdoc:
