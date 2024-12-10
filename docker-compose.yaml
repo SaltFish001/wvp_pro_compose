@@ -74,6 +74,7 @@ services:
       - 3000:3000
     volumes:
       - ./config/wvp:/config
+      - ${RECORD_PATH}:/media/record:rw # 录像保存目录
       - ${BASE_PATH}/logs/wvp:/opt/wvp/logs # 保存wvp日志
     healthcheck:
       start_period: 15s

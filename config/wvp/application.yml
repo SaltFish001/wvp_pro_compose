@@ -163,7 +163,7 @@ media:
   # [可选] zlm服务器的hook.admin_params=secret
   secret: 034523TF8yT83wh5Wvz73f7
   # 录像路径
-  record-path: ./www/record
+  record-path: /media/record
   # 录像保存时长
   record-day: 7
   # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
@@ -241,9 +241,9 @@ user-settings:
   # 开启接口文档页面。 默认开启，生产环境建议关闭，遇到swagger相关的漏洞时也可以关闭
   doc-enable: true
   # 跨域配置，不配置此项则允许所有跨域请求，配置后则只允许配置的页面的地址请求， 可以配置多个
-  allowed-origins:
-    - http://localhost:8008
-    - http://192.168.1.3:8008
+  # allowed-origins:
+  #   - http://localhost:8008
+  #   - http://192.168.1.3:8008
   # 国标设备离线后的上线策略，
   # 0： 国标标准实现，设备离线后不回复心跳，直到设备重新注册上线，
   # 1（默认）： 对于离线设备，收到心跳就把设备设置为上线，并更新注册时间为上次这次心跳的时间。防止过期时间判断异常
