@@ -96,13 +96,13 @@ services:
     ports:
       - ${STREAM_PORT}:${STREAM_PORT}/udp
       - ${STREAM_PORT}:${STREAM_PORT}/tcp
-      - 3001:3001
+      - 3001:80
     volumes:
       - ./config/zlm/config.ini:/opt/media/conf/config.ini
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录
       - ${BASE_PATH}/logs/media:/opt/media/log # 保存zlm日志
     healthcheck:
       start_period: 30s
-      test: [ "CMD", "curl", "-sS", "http://localhost:3001" ]
+      test: [ "CMD", "curl", "-sS", "http://localhost" ]
       timeout: 10s
       retries: 10
