@@ -145,7 +145,7 @@ media:
   # [可选] zlm服务器的hook所使用的IP, 默认使用sip.ip
   hook-ip: ${WVP_IP}
   # [必须修改] zlm服务器的http.port
-  http-port: 80
+  http-port: 3001
   # [可选] zlm服务器的http.sslport, 置空使用zlm配置文件配置
   http-ssl-port:
   # [可选] zlm服务器的rtmp.port, 置空使用zlm配置文件配置

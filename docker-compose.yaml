@@ -96,7 +96,7 @@ services:
     ports:
       - ${STREAM_PORT}:${STREAM_PORT}/udp
       - ${STREAM_PORT}:${STREAM_PORT}/tcp
-      - 3001:80
+      - 3001:3001
     volumes:
       - ./config/zlm/config.ini:/opt/media/conf/config.ini
       - ${RECORD_PATH}:/media/record:rw # 录像保存目录
